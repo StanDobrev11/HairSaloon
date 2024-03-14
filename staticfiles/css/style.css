@@ -1173,7 +1173,7 @@ nav li a:hover {
     flex-direction: column; /* Stack children vertically */
     justify-content: center; /* Center children vertically */
     align-items: center; /* Center children horizontally */
-    height: 100vh; /* Use 100% of the viewport height */
+    height: calc(100vh - 130px); /* Use 100% of the viewport height */
 }
 
 .login-container {
