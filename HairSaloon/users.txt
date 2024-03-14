@@ -1,0 +1,10 @@
+Type of users in Django:
+1. Built-in User -> class User(AbstractUser)
+2. Use User only for auth and define Profile model for user data
+3. Overwrite User by inherit AbstractBaseUser for auth and define Profile model for user data
+
+Best option is to use 3 since it provides full and comprehensive creation of the user class and it wont be difficult to
+alter this class later on
+
+In settings.py we need to point AUTH_BASE_USER = 'app.user'
+
