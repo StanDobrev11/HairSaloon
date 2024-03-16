@@ -21,4 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('HairSaloon.common.urls')),
     path('accounts/', include('HairSaloon.accounts.urls')),
+    path('dashboard/', include('HairSaloon.bookings.urls')),
+    path('services/', include('HairSaloon.services.urls')),
+    path('personel/', include('HairSaloon.hairdressers.urls')),
 ]

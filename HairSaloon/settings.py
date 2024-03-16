@@ -40,6 +40,9 @@ INSTALLED_APPS = [
 
     'HairSaloon.common.apps.CommonConfig',
     'HairSaloon.accounts.apps.AccountsConfig',
+    'HairSaloon.bookings.apps.BookingsConfig',
+    'HairSaloon.services.apps.ServicesConfig',
+    'HairSaloon.hairdressers.apps.HairdressersConfig',
 ]
 
 MIDDLEWARE = [
@@ -131,4 +134,3 @@ AUTH_USER_MODEL = 'accounts.HairSaloonUser'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
-

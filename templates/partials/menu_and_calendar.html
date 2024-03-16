@@ -14,7 +14,9 @@
         <ul>
             <li><a href="{% url 'index' %}">Home</a></li>
             {% if user.is_authenticated %}
-{#                <li><a href="{% url 'logout' %}">Profile</a></li>#}
+                <li><a href="#">My Bookings</a></li>
+                <li><a href="#">Book an Apointment</a></li>
+                <li><a href="#">Profile</a></li>
                 <li><a href="{% url 'logout' %}">Log out</a></li>
                 
             {% else %}

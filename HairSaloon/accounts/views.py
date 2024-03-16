@@ -3,8 +3,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import generic as views
-from django.contrib.auth import views as auth_views, get_user_model, login
-from django.shortcuts import render
+from django.contrib.auth import views as auth_views, get_user_model, login, logout
+from django.shortcuts import render, redirect
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
@@ -54,7 +54,7 @@ class RegisterUserView(views.CreateView):
         return valid
 
 
-class LogoutUserView(auth_views.LogoutView):
+def logout_view(request):
+    logout(request)
 
-    def get_success_url(self):
-        return reverse('index')
+    return redirect('index')
