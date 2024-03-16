@@ -30,6 +30,7 @@
 
                     <div class="form-content">
                         <form method="post" action="{% url 'register' %}">
+                            
                             {{ form.as_p }}
                             
                             {% csrf_token %}

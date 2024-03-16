@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load filters %}
+
 
 {% load static %}
 
@@ -26,11 +28,18 @@
 
                     <div class="form-content">
                         <form action="{% url 'login' %}?next={{ next }}" method="post">
-                            {{ form.as_p }}
+                            {#                            {{ form.as_p }}#}
+                            <p>
+                                {{ form.username|placeholder:'Enter Email' }}
+                            </p>
+
+                            <p>
+                                {{ form.password|placeholder:'Enter Password' }}
+                            </p>
 
                             {% csrf_token %}
                             <button type="submit" class="btn login-btn">Log In</button>
-
+                            
                         </form>
                     </div>
                 </div>

@@ -1,15 +1,14 @@
-from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
-from django.contrib.auth import views as auth_views, get_user_model, login, logout
-from django.shortcuts import render, redirect
+from django.contrib.auth import views as auth_views, login, logout
+from django.shortcuts import redirect
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
-from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserAuthenticationForm
+from HairSaloon.accounts.forms import HairSaloonUserCreationForm
 
 
 # Create your views here.
