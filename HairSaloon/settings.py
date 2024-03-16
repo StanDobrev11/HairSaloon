@@ -134,3 +134,8 @@ AUTH_USER_MODEL = 'accounts.HairSaloonUser'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
+
+MEDIA_ROOT = [
+    'staticfiles/media',
+]
+MEDIA_URL = '/media/'
