@@ -27,19 +27,15 @@
                         <h1 class="page-headline">Register</h1>
                         <i class="iconstartitle-register textmagenta fa fa-star"></i>
                     </div>
-                    <form method="post" action="{% url 'register' %}">
-                        {{ form.as_p }}
-                        {#                        <div class="form-group">#}
-                        {#                            <label for="loginInput">Email or Phone:</label>#}
-                        {#                            <input type="text" id="loginInput" name="login" placeholder="Email or Phone" required>#}
-                        {#                        </div>#}
-                        {#                        <div class="form-group">#}
-                        {#                            <label for="password">Password:</label>#}
-                        {#                            <input type="password" id="password" name="password" placeholder="Password" required>#}
-                        {#                        </div>#}
-                        {% csrf_token %}
-                        <button type="submit" class="btn login-btn">Register</button>
-                    </form>
+
+                    <div class="form-content">
+                        <form method="post" action="{% url 'register' %}">
+                            {{ form.as_p }}
+                            
+                            {% csrf_token %}
+                            <button type="submit" class="btn login-btn">Register</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

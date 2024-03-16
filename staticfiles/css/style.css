@@ -802,13 +802,36 @@ a.map {
 
 .iconstartitle-login {
     position: absolute;
-    top: 382px;
+    top: 390px;
 }
 
 .iconstartitle-register {
     position: absolute;
-    top: 278px;
+    top: 295px;
 }
+
+/* Target the div wrapping the form fields */
+.form-content p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adjust spacing between form fields as needed */
+}
+
+/* Style labels to be consistent */
+.form-content label {
+    width: 20%; /* Adjust the width as needed */
+    min-width: 100px; /* Prevents the label from becoming too small on narrow screens */
+    margin-right: 10px; /* Space between label and input field */
+    text-align: right; /* Aligns text to the right of the label */
+}
+
+/* Ensure input fields take up the remaining space */
+.form-content input, .form-content select, .form-content textarea {
+    width: 80%; /* Adjust based on the label width to fill the rest of the line */
+    flex-grow: 1; /* Allows the input field to grow and fill available space */
+    margin-right: 10px;
+}
+
 
 .title-container h1.page-headline {
     margin-bottom: 0;
