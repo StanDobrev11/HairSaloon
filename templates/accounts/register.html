@@ -21,11 +21,13 @@
         <div class="pagearea">
             <div class="login-parent-container">
                 <div class="login-container">
-                    <form action="{% url 'login' %}?next={{ next }}" method="post">
 
-                        <h1 class="page-headline">Login</h1>
-                        <i class="iconstartitle-login textmagenta fa fa-star"></i>
+                    <div class="title-container">
 
+                        <h1 class="page-headline">Register</h1>
+                        <i class="iconstartitle-register textmagenta fa fa-star"></i>
+                    </div>
+                    <form method="post" action="{% url 'register' %}">
                         {{ form.as_p }}
                         {#                        <div class="form-group">#}
                         {#                            <label for="loginInput">Email or Phone:</label>#}
@@ -36,8 +38,7 @@
                         {#                            <input type="password" id="password" name="password" placeholder="Password" required>#}
                         {#                        </div>#}
                         {% csrf_token %}
-                        <button type="submit" class="btn login-btn">Log In</button>
-
+                        <button type="submit" class="btn login-btn">Register</button>
                     </form>
                 </div>
             </div>

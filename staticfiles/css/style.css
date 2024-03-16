@@ -800,6 +800,36 @@ a.map {
     top: 95px;
 }
 
+.iconstartitle-login {
+    position: absolute;
+    top: 382px;
+}
+
+.iconstartitle-register {
+    position: absolute;
+    top: 278px;
+}
+
+.title-container h1.page-headline {
+    margin-bottom: 0;
+    color: #fff;
+    font-weight: 400;
+    font-size: 25px;
+}
+
+.title-container h1.page-headline:after {
+    content: '';
+    width: 91%;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 20px;
+    border-bottom: double medium;
+    display: block;
+    margin-bottom: 30px;
+    position: relative;
+    margin-left: 26px;
+}
+
+
 .pagearea a.readmore {
     font-style: italic;
     background-color: rgba(230, 33, 97, 0.48);

@@ -13,8 +13,18 @@
     <nav>
         <ul>
             <li><a href="{% url 'index' %}">Home</a></li>
+            {% if user.is_authenticated %}
+{#                <li><a href="{% url 'logout' %}">Profile</a></li>#}
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                
+            {% else %}
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url 'register' %}">Register</a>
+
+            {% endif %}
+
             <li><a href="{% url 'blog' %}">Blog</a></li>
-            <li><a target="_blank" href="https://www.wowthemes.net/themes/beauttio/">WP Version</a></li>
+
         </ul>
     </nav>
 </div>
