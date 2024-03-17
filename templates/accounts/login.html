@@ -21,30 +21,37 @@
         </div>
 
         <div class="pagearea">
-            <div class="login-parent-container">
-                <div class="login-container">
-                    <h1 class="page-headline">Login</h1>
-                    <i class="iconstartitle-login textmagenta fa fa-star"></i>
+            <h1 class="page-headline">LOGIN</h1>
+            <i class="iconstartitle textmagenta fa fa-star"></i>
 
-                    <div class="form-content">
-                        <form action="{% url 'login' %}?next={{ next }}" method="post">
-                            {#                            {{ form.as_p }}#}
-                            <p>
-                                {{ form.username|placeholder:'Enter Email' }}
-                            </p>
+            <div class="login-container">
+                <div class="form-content">
+                    <form action="{% url 'login' %}?next={{ next }}" method="post">
+                        {#                            {{ form.as_p }}#}
+                        <p>
+                            {{ form.username|placeholder:'Enter Email' }}
+                        </p>
 
-                            <p>
-                                {{ form.password|placeholder:'Enter Password' }}
-                            </p>
+                        <p>
+                            {{ form.password|placeholder:'Enter Password' }}
+                        </p>
 
-                            {% csrf_token %}
-                            <button type="submit" class="btn login-btn">Log In</button>
-                            
-                        </form>
-                    </div>
+                        {% csrf_token %}
+                        <button type="submit" class="btn login-btn">Log In</button>
+
+                    </form>
                 </div>
             </div>
+
         </div>
+        {% if messages %}
+            <ul class="error-messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 
     <div class="clearfix"></div>

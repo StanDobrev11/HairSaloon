@@ -23,7 +23,7 @@ class HairSaloonUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin)
 
     # the idea behind below 3 fields is that the user must have name and number
     # to be contacted in connection with their appointments
-    # when in DEBUG, the fileds will be set to optional
+    # when in DEBUG, the fields will be set to optional
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
     phone_number = models.CharField(_("phone number"), max_length=15, blank=True)

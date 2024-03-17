@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.auth import mixins as auth_mixins, get_user_model
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -10,6 +12,8 @@ from django.views.decorators.debug import sensitive_post_parameters
 
 from HairSaloon.accounts.forms import HairSaloonUserCreationForm
 
+UserModel = get_user_model()
+
 
 # Create your views here.
 
@@ -20,6 +24,12 @@ class LoginUserView(auth_views.LoginView):
 
     # this is needed to redirect the user out of the login page
     redirect_authenticated_user = True
+
+    def form_invalid(self, form):
+        # this form handles error msgs upon passing invalid credentials and
+        # can be used in the template as {{ messages }} tag
+        messages.error(self.request, 'Invalid email or password.')
+        return super().form_invalid(form)
 
 
 class RegisterUserView(views.CreateView):
@@ -51,6 +61,16 @@ class RegisterUserView(views.CreateView):
         valid = super().form_valid(form)
         login(self.request, self.object)
         return valid
+
+
+class ProfileUserView(auth_mixins.LoginRequiredMixin, views.TemplateView):
+    # model = UserModel
+    template_name = 'accounts/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile'] = UserModel.objects.get(pk=self.request.user.pk)
+        return context
 
 
 def logout_view(request):

@@ -800,15 +800,79 @@ a.map {
     top: 95px;
 }
 
-.iconstartitle-login {
-    position: absolute;
-    top: 395px;
+.split-view-container {
+    display: flex;
+    height: calc(100vh - 50px); /* Adjust height as needed */
 }
 
-.iconstartitle-register {
-    position: absolute;
-    top: 295px;
+.left-pane, .right-pane {
+    flex: 1; /* Each pane takes up equal width */
+    overflow-y: auto; /* Enables vertical scrolling within each pane */
+    padding: 40px 60px;
+    margin: 0px auto;
 }
+
+
+.right-pane {
+    margin-right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 15px;
+    text-align: left;
+    font-family: Roboto Condensed;
+}
+
+.right-pane-title, .left-pane-title {
+    font-family: Oswald;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 1px;
+    margin-bottom: 0;
+    color: #fff;
+    font-weight: 400;
+    font-size: 25px;
+}
+
+.right-pane-title:after {
+    content: '';
+    width: 91%;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 20px;
+    border-bottom: double medium;
+    display: block;
+    margin-bottom: 30px;
+    position: relative;
+    margin-left: 26px;
+}
+
+/* Error Messages Styles */
+.error-messages {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0;
+    margin: 0 0 20px 0; /* Add some margin to the bottom */
+}
+
+.error-messages li {
+    color: #b94a48; /* Dark red; adjust color as needed */
+    background-color: #f2dede; /* Light red background */
+    border: 1px solid #eed3d7; /* Light red border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px; /* Padding inside the message boxes */
+    margin-bottom: 5px; /* Space between messages */
+    font-size: 14px; /* Adjust font size as needed */
+    text-align: left; /* Align text to the left */
+}
+
+/* Optional: Add an icon or some identifier for errors */
+.error-messages li:before {
+    content: "\26A0"; /* Unicode for warning sign, you can use any icon/font library like FontAwesome instead */
+    color: #b94a48; /* Icon color */
+    font-weight: bold; /* Make the icon bolder */
+    display: inline-block; /* Ensure it displays inline */
+    width: 20px; /* Width of the icon area */
+    margin-right: 10px; /* Space between icon and text */
+    font-size: 18px; /* Icon size */
+}
+
 
 /* Target the div wrapping the form fields */
 .form-content p {

@@ -19,27 +19,24 @@
         </div>
 
         <div class="pagearea">
-            <div class="login-parent-container">
-                <div class="login-container">
+            <h1 class="page-headline">REGISTER</h1>
+            <i class="iconstartitle textmagenta fa fa-star"></i>
 
-                    <div class="title-container">
+            <div class="login-container">
 
-                        <h1 class="page-headline">Register</h1>
-                        <i class="iconstartitle-register textmagenta fa fa-star"></i>
-                    </div>
+                
+                <div class="form-content">
+                    <form method="post" action="{% url 'register' %}">
 
-                    <div class="form-content">
-                        <form method="post" action="{% url 'register' %}">
-                            
-                            {{ form.as_p }}
-                            
-                            {% csrf_token %}
-                            <button type="submit" class="btn login-btn">Register</button>
-                        </form>
-                    </div>
+                        {{ form.as_p }}
+
+                        {% csrf_token %}
+                        <button type="submit" class="btn login-btn">Register</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="clearfix"></div>
