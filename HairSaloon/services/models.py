@@ -22,7 +22,7 @@ class Service(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     haircut_url = models.URLField(max_length=1024, blank=True, null=True)
     haircut_photo = models.ImageField(upload_to='haircut_images/', blank=True, null=True)
-    procedures = models.ManyToManyField(to='Procedure', related_name='services')
+    # procedures = models.ManyToManyField(to='Procedure', related_name='services')
 
     def __str__(self):
         return self.name
@@ -37,29 +37,29 @@ class Service(models.Model):
             if response.status_code == 200:
                 fp = BytesIO(response.content)
                 file_name = self.haircut_url.split('/')[-1]  # Assumes the URL has a filename at the end
-                self.haircut_photo.save(file_name, File(fp))
+                self.haircut_photo.save(file_name, File(fp), save=False)
 
     def save(self, *args, **kwargs):
         self.download_and_save_image()
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
-
-class Procedure(models.Model):
-    PROCEDURE_CHOICES = (
-        ('cut', 'cut'),
-        ('wash', 'wash'),
-        ('dry', 'dry'),
-        ('coloring', 'coloring'),
-        ('treatment', 'treatment'),
-        ('styling', 'styling'),
-        ('official style', 'official style'),
-    )
-
-    name = models.CharField(
-        max_length=30,
-        unique=True,
-        choices=PROCEDURE_CHOICES
-    )
-
-    def __str__(self):
-        return self.name
+#
+# class Procedure(models.Model):
+#     PROCEDURE_CHOICES = (
+#         ('cut', 'cut'),
+#         ('wash', 'wash'),
+#         ('dry', 'dry'),
+#         ('coloring', 'coloring'),
+#         ('treatment', 'treatment'),
+#         ('styling', 'styling'),
+#         ('official style', 'official style'),
+#     )
+#
+#     name = models.CharField(
+#         max_length=30,
+#         unique=True,
+#         choices=PROCEDURE_CHOICES
+#     )
+#
+#     def __str__(self):
+#         return self.name
