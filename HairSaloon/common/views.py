@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views import generic as views
 
+from HairSaloon.hairdressers.models import HairDresser
+
 
 # Create your views here.
 class IndexView(views.TemplateView):
@@ -9,3 +11,8 @@ class IndexView(views.TemplateView):
 
 class BlogView(views.TemplateView):
     template_name = 'common/blog.html'
+
+
+class AboutView(views.ListView):
+    template_name = 'common/about.html'
+    queryset = HairDresser.objects.all()
