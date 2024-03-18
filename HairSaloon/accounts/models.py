@@ -55,6 +55,17 @@ class HairSaloonUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin)
     # the manager must inherit BaseUserManager in order to change username field to email
     objects = HairSaloonUserManager()
 
+    @property
+    def full_name(self):
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        elif self.first_name or self.last_name:
+            return self.first_name or self.last_name
+        else:
+            return self.email
+
+    def __str__(self):
+        return self.full_name
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
