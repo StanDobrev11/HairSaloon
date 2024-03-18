@@ -9,9 +9,9 @@
     <div class="hairdresser-info">
         <h2>{{ hairdresser.name }}</h2>
         <p>Age: {{ hairdresser.age }}</p>
-        <p>Gender: {{ hairdresser.gender }}</p>
-        <p>Working Since: {{ hairdresser.working_since }}</p>
-        <h3>Services:</h3>
+{#        <p>Gender: {{ hairdresser.gender }}</p>#}
+        <p>Working With Us Since: {{ hairdresser.working_since }}</p>
+        <h3>Haircuts She Can Do:</h3>
         <ul>
             {% for service in hairdresser.services.all %}
                 <li>

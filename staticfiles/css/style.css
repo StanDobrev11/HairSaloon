@@ -71,6 +71,11 @@ body {
 
 a {
     text-decoration: none;
+    color: #A50965;
+}
+
+a:hover {
+    color: white;
 }
 
 p {
@@ -864,19 +869,19 @@ a.map {
 
 .hairdresser-info h2 {
     font-size: 24px;
-    color: #333;
+    /*color: #c60f13;*/
     margin-bottom: 10px;
 }
 
 .hairdresser-info p {
     font-size: 18px;
-    color: #666;
+    /*color: #666;*/
     line-height: 1.6;
 }
 
 .hairdresser-info h3 {
     font-size: 20px;
-    color: #333;
+    /*color: #c60f13;*/
     margin-top: 20px;
     margin-bottom: 10px;
 }
@@ -888,13 +893,13 @@ ul {
 
 ul li {
     font-size: 18px;
-    color: #444;
+    /*color: #444;*/
     margin-bottom: 5px;
 }
 .service-card {
     display: flex;
     margin: 20px;
-    background-color: #f5f5f5;
+    background-color: transparent;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border-radius: 8px;
     overflow: hidden;
@@ -902,7 +907,7 @@ ul li {
 
 .service-photo img {
     width: 100%;
-    max-width: 50px; /* Adjust based on your preference */
+    max-width: 500px; /* Adjust based on your preference */
     object-fit: cover;
 }
 
@@ -913,6 +918,9 @@ ul li {
 
 .service-info h2 {
     margin-top: 0;
+    font-size: 24px;
+    /*color: #333;*/
+    margin-bottom: 10px;
 }
 
 .service-info p {
