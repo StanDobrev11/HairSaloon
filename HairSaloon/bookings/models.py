@@ -1,12 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.db import models
 
 # Create your models here.
 from django.db import models
-from django.conf import settings
-from django.utils import timezone
 
 from HairSaloon.hairdressers.models import HairDresser
+from HairSaloon.services.models import Service
 
 UserModel = get_user_model()
 
@@ -14,8 +12,8 @@ UserModel = get_user_model()
 class Booking(models.Model):
     date = models.DateField()
     time = models.TimeField()
-    created_at = models.DateTimeField(default=timezone.now, auto_now_add=True)
-    updated_at = models.DateTimeField(default=timezone.now, auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     notes = models.TextField(blank=True, null=True)
     user_notified = models.BooleanField(default=False)
     hairdresser_notified = models.BooleanField(default=False)
@@ -26,9 +24,9 @@ class Booking(models.Model):
         related_name='bookings'
     )
     service = models.ForeignKey(
-        to='Service',
+        to=Service,
         on_delete=models.CASCADE,
-        related_name='bookings'
+        related_name='bookings',
     )
     hairdresser = models.ForeignKey(
         to=HairDresser,

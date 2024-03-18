@@ -3,42 +3,60 @@
 
 {% block content %}
 
-<body style="background: url('{% static 'img/bg6.jpg' %}') fixed; background-size: cover;">
+    <body style="background: url('{% static 'img/bg4.jpg' %}') fixed; background-size: cover;">
 
     {% include 'partials/menu_and_calendar.html' %}
+    <div class="container">
 
-    <div class="container dashboard">
-        <h2>Welcome, {{ request.user.first_name }}</h2>
-
-        <div class="upcoming-bookings">
-            <h3>Upcoming Bookings</h3>
-            <!-- Placeholder for calendar integration or list -->
-            {% for booking in upcoming_bookings %}
-            <p>{{ booking.date }}: {{ booking.service }}</p> <!-- Adjust as per your Booking model -->
-            {% endfor %}
+        <div class="logoarea">
+            <div class="intro">
+                <form method="POST" action="{% url 'dashboard' %}">
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                    <div id="timeSlotsContainer"></div>
+                    <button type="submit">Book Appointment</button>
+                </form>
+            </div>
         </div>
 
-        <div class="booking-history">
-            <h3>Booking History</h3>
-            {% for booking in previous_bookings %}
-            <p>{{ booking.date }}: {{ booking.service }}</p>
-            {% endfor %}
-        </div>
+        <div class="pagearea">
+            <h1 class="page-headline">BOOKINGS INFO</h1>
+            <i class="iconstartitle textmagenta fa fa-star"></i>
+            <div class="container-dashboard">
+                <h2>Welcome, {{ request.user.first_name }}</h2>
 
-        <div class="photo-gallery">
-            <h3>Previous Styles</h3>
-            {% for photo in photos %}
-            <img src="{{ photo.image.url }}" alt="Hair style" /> <!-- Adjust as per your Photo model -->
-            {% endfor %}
+                <div class="upcoming-bookings">
+                    <h3>Upcoming Bookings</h3>
+                    <!-- Placeholder for calendar integration or list -->
+                    {% for booking in upcoming_bookings %}
+                        <p>{{ booking.date }}: {{ booking.service }}</p> <!-- Adjust as per your Booking model -->
+                    {% endfor %}
+                </div>
+
+                <div class="booking-history">
+                    <h3>Booking History</h3>
+                    {% for booking in previous_bookings %}
+                        <p>{{ booking.date }}: {{ booking.service }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="photo-gallery">
+                    <h3>Previous Styles</h3>
+                    {% for photo in photos %}
+                        <img src="{{ photo.image.url }}" alt="Hair style"/> <!-- Adjust as per your Photo model -->
+                    {% endfor %}
+                </div>
+
+                <!-- Link or button to initiate a new booking -->
+                <a href="#" class="btn">Make a New Booking</a>
+            </div>
+
+            {% include 'partials/footer.html' %}
+            {% include 'partials/script_other_page.html' %}
+            <script src="{% static 'js/bookings.js' %}"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </div>
-        
-        <!-- Link or button to initiate a new booking -->
-        <a href="{% url 'new_booking_url' %}" class="btn">Make a New Booking</a>
     </div>
-
-    {% include 'partials/footer.html' %}
-    {% include 'partials/script_other_page.html' %}
-
-</body>
+    </body>
 
 {% endblock %}
