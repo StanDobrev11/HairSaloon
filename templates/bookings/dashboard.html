@@ -9,13 +9,9 @@
     <div class="container">
 
         <div class="logoarea">
-            <div class="intro">
-                <form method="POST" action="{% url 'dashboard' %}">
-                    {{ form.as_p }}
-                    {% csrf_token %}
-                    <div id="timeSlotsContainer"></div>
-                    <button type="submit">Book Appointment</button>
-                </form>
+            <div class="container-dashboard">
+                <div id="calendar"></div>
+
             </div>
         </div>
 
@@ -53,8 +49,9 @@
 
             {% include 'partials/footer.html' %}
             {% include 'partials/script_other_page.html' %}
-            <script src="{% static 'js/bookings.js' %}"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            {% include 'partials/script_calendar.html' %}
+            <script src="{% static 'js/calendar.js' %}"></script>
+
         </div>
     </div>
     </body>

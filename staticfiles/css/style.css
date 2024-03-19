@@ -1000,6 +1000,59 @@ ul li {
     background-color: #a3427a; /* A darker shade for hover effect */
 }
 
+.container-dashboard .logoarea {
+    position: relative; /* Adjust as needed */
+    padding: 20px; /* Provides some spacing around the calendar */
+    max-width: 100%; /* Ensures the calendar doesn't overflow its container */
+}
+
+/* Basic styling for the calendar itself */
+#calendar {
+    max-width: 900px; /* Adjust based on your layout's maximum width */
+    margin: 0 auto; /* Centers the calendar */
+    padding: 20px; /* Space around the calendar's content */
+    background-color: #fff; /* Matches your app's theme, adjust as needed */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth, optional */
+    border-radius: 8px; /* Rounds the corners */
+}
+
+/* Header styles */
+.fc-toolbar {
+    padding: 10px 0; /* More or less space around the header */
+    color: #333; /* Color for the header text */
+    font-size: 16px; /* Adjust the size of the header text */
+}
+
+/* Button styles */
+.fc-button {
+    color: #333; /* Button text color */
+    background-color: #f7f7f7; /* Button background */
+    border: 1px solid #ddd; /* Button border */
+    padding: 5px 10px; /* Button padding */
+}
+
+.fc-button:hover {
+    background-color: #e7e7e7; /* Button hover state background */
+}
+
+/* Today button specific styling */
+.fc-button.fc-today-button {
+    color: #fff; /* Today button text color */
+    background-color: #007bff; /* Bootstrap primary color for emphasis */
+    border-color: #007bff; /* Border to match */
+}
+
+/* Adjusts the day cell sizes */
+.fc-day-grid-container {
+    font-size: 14px; /* Size of the date numbers */
+}
+
+.fc .fc-daygrid-day-number {
+    padding: 4px;
+    position: relative;
+    z-index: 4;
+}
+
 .error-messages li {
     color: #b94a48; /* Dark red; adjust color as needed */
     background-color: #f2dede; /* Light red background */

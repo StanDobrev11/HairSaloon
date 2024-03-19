@@ -22,6 +22,7 @@ class Service(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     haircut_url = models.URLField(max_length=1024, blank=True, null=True)
     haircut_photo = models.ImageField(upload_to='haircut_images/', blank=True, null=True)
+
     # procedures = models.ManyToManyField(to='Procedure', related_name='services')
 
     def __str__(self):

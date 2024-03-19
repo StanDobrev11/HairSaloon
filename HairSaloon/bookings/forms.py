@@ -6,4 +6,4 @@ from HairSaloon.bookings.models import Booking
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ['date', 'time', 'service', 'notes']
+        fields = ['date', 'start', 'end', 'service', 'notes']
