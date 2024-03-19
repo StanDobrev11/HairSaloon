@@ -14,6 +14,11 @@ from HairSaloon.services.models import Service
 UserModel = get_user_model()
 
 
+def bookings_directory_path(instance, filename=None):
+    # file will be uploaded to MEDIA_ROOT/bookings/user_<id>/<filename>
+    return 'bookings/user_{0}/'.format(instance.user.pk)
+
+
 class Booking(models.Model):
     date = models.DateField()
     start = models.TimeField()
@@ -23,6 +28,14 @@ class Booking(models.Model):
     notes = models.TextField(blank=True, null=True)
     user_notified = models.BooleanField(default=False)
     hairdresser_notified = models.BooleanField(default=False)
+    pre_photo = models.ImageField(
+        upload_to=bookings_directory_path,
+        blank=True,
+    )
+    post_photo = models.ImageField(
+        upload_to=bookings_directory_path,
+        blank=True,
+    )
 
     user = models.ForeignKey(
         to=UserModel,

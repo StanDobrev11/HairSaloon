@@ -18,60 +18,83 @@
         <div class="pagearea">
             <h1 class="page-headline">BOOKINGS INFO</h1>
             <i class="iconstartitle textmagenta fa fa-star"></i>
+
             <div class="container-dashboard">
-                <h2>Welcome, {{ request.user.first_name }}</h2>
+                <h1 class="entry-title">Welcome, {{ profile.user }}</h1>
 
                 <div class="upcoming-bookings">
-                    <h3>Upcoming Bookings</h3>
-                    <!-- Placeholder for calendar integration or list -->
-                    {% for booking in upcoming_bookings %}
-                        <p>{{ booking.date }}: {{ booking.service }}</p> <!-- Adjust as per your Booking model -->
-                    {% endfor %}
+                    <button class="toggle-button">Upcoming Bookings</button>
+                    <div id="bookings-list" style="display: none;">
+                        {% if upcoming_bookings %}
+                            {% for booking in upcoming_bookings %}
+                                <p>{{ booking.date }}: {{ booking.service }}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>No bookings yet!</p>
+                        {% endif %}
+                    </div>
                 </div>
+
 
                 <div class="booking-history">
-                    <h3>Booking History</h3>
-                    {% for booking in previous_bookings %}
-                        <p>{{ booking.date }}: {{ booking.service }}</p>
-                    {% endfor %}
+                    <button class="toggle-button">Booking History</button>
+                    <div id="history-list" style="display: none;">
+                        {% if passed_bookings %}
+                            {% for booking in passed_bookings %}
+                                <p>{{ booking.date }}: {{ booking.service }}</p>
+                                <div class="booking-photos">
+                                    <button class="toggle-button">Show Photos</button>
+                                    <div id="photos" style="display: none;">
+
+                                        <img class="pre-photo" src="{{ booking.pre_photo }}"
+                                             alt="No pre-photo uploaded!"/>
+
+                                        <img class="post-photo" src="{{ booking.post_photo }}"
+                                             alt="No post-photo uploaded!"/>
+
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No booking history available.</p>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <div class="photo-gallery">
-                    <h3>Previous Styles</h3>
-                    {% for photo in photos %}
-                        <img src="{{ photo.image.url }}" alt="Hair style"/> <!-- Adjust as per your Photo model -->
-                    {% endfor %}
-                </div>
 
                 <!-- Link or button to initiate a new booking -->
-                <a href="#" class="btn">Make a New Booking</a>
-                <form action="{% url 'dashboard' %}" method="post">
-                    <p>Date: {{ form.date }}</p>
-                    <p>Start time: {{ form.start }}</p> <!-- Django renders the actual input element -->
-                    <p>Service: {{ form.service }}</p> <!-- Django renders the actual select element -->
-                    <p>Expected end: <span id="end_time_display">N/A</span></p>
-                    <p>Notes: {{ form.notes }}</p>
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {% for error in form.non_field_errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                <div class="new_booking">
+                    <button class="toggle-button">Book an Appointment</button>
+                    <div id="new_booking" style="display: none;">
+                        
+                        <form action="{% url 'dashboard' %}" method="post">
+                            <p>Date: {{ form.date }}</p>
+                            <p>Start time: {{ form.start }}</p> <!-- Django renders the actual input element -->
+                            <p>Service: {{ form.service }}</p> <!-- Django renders the actual select element -->
+                            <p>Expected end: <span id="end_time_display">N/A</span></p>
+                            <p>Notes: {{ form.notes }}</p>
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.non_field_errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
 
-                    <button type="submit" class="btn login-btn">Create Booking</button>
-                    {% csrf_token %}
-                </form>
+                            <button type="submit" class="btn login-btn">Create Booking</button>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+
+                    {% include 'partials/footer.html' %}
+                    {% include 'partials/script_other_page.html' %}
+                    {% include 'partials/script_calendar.html' %}
+                    <script src="{% static 'js/calendar.js' %}"></script>
+                    <script src="{% static 'js/end_time_dynamic_display.js' %}"></script>
+                    <script src="{% static 'js/toggle_button_collapse.js' %}"></script>
+
+                </div>
             </div>
-
-            {% include 'partials/footer.html' %}
-            {% include 'partials/script_other_page.html' %}
-            {% include 'partials/script_calendar.html' %}
-            <script src="{% static 'js/calendar.js' %}"></script>
-            <script src="{% static 'js/end_time_dynamic_display.js' %}"></script>
-
-        </div>
-    </div>
     </body>
 
 {% endblock %}

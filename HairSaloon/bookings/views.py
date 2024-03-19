@@ -1,23 +1,17 @@
-from datetime import datetime, timedelta
-
+from datetime import timedelta
 from django.contrib import messages
-from django.core.exceptions import ValidationError
 from django.core.serializers import serialize
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import generic as views
 
-from HairSaloon import bookings
+from HairSaloon.accounts.models import Profile
 from HairSaloon.bookings.forms import BookingForm
 from HairSaloon.bookings.models import Booking
-from HairSaloon.services.models import Service
 
 
 # Create your views here.
 
-# class DashboardView(views.TemplateView):
-#     template_name = 'bookings/dashboard.html'
 def bookings_json(request):
     # bookings = [
     #     {
@@ -37,15 +31,20 @@ def bookings_json(request):
     return JsonResponse(booking_list, safe=False)
 
 
-
-
-
 class BookingView(views.FormView):
-    # template_name = 'bookings/calendar.html'
     template_name = 'bookings/dashboard.html'
     form_class = BookingForm
-    # success_url = reverse_lazy('success_page')
     success_url = HttpResponse('Success')
+
+    def get_context_data(self, **kwargs):
+        context = super(BookingView, self).get_context_data(**kwargs)
+        bookings = Booking.objects.all().prefetch_related()
+        context['bookings'] = bookings
+        context['profile'] = Profile.objects.get(user=self.request.user)
+        context['upcoming_bookings'] = bookings.filter(date__lte=timezone.now())
+        context['passed_bookings'] = bookings.filter(date__gte=timezone.now())
+
+        return context
 
     def form_valid(self, form):
         booking = form.save(commit=False)
