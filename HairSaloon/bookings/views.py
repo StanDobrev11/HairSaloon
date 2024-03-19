@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.serializers import serialize
@@ -9,6 +11,7 @@ from django.views import generic as views
 from HairSaloon import bookings
 from HairSaloon.bookings.forms import BookingForm
 from HairSaloon.bookings.models import Booking
+from HairSaloon.services.models import Service
 
 
 # Create your views here.
@@ -34,6 +37,9 @@ def bookings_json(request):
     return JsonResponse(booking_list, safe=False)
 
 
+
+
+
 class BookingView(views.FormView):
     # template_name = 'bookings/calendar.html'
     template_name = 'bookings/dashboard.html'
@@ -49,6 +55,9 @@ class BookingView(views.FormView):
 
         if available_hairdresser:
             booking.hairdresser = available_hairdresser[0]
+            # calculating and saving end time
+            booking.end = (booking.start + timedelta(minutes=booking.service.duration)).time()
+
             booking.save()
             messages.success(self.request, 'Your booking has been successfully created.')
             return super().form_valid(form)

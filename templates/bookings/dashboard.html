@@ -46,7 +46,11 @@
                 <!-- Link or button to initiate a new booking -->
                 <a href="#" class="btn">Make a New Booking</a>
                 <form action="{% url 'dashboard' %}" method="post">
-                    {{ form }}
+                    <p>Date: {{ form.date }}</p>
+                    <p>Start time: {{ form.start }}</p> <!-- Django renders the actual input element -->
+                    <p>Service: {{ form.service }}</p> <!-- Django renders the actual select element -->
+                    <p>Expected end: <span id="end_time_display">N/A</span></p>
+                    <p>Notes: {{ form.notes }}</p>
                     {% if form.non_field_errors %}
                         <div class="alert alert-danger">
                             {% for error in form.non_field_errors %}
@@ -64,6 +68,7 @@
             {% include 'partials/script_other_page.html' %}
             {% include 'partials/script_calendar.html' %}
             <script src="{% static 'js/calendar.js' %}"></script>
+            <script src="{% static 'js/end_time_dynamic_display.js' %}"></script>
 
         </div>
     </div>

@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import generic as views
 
@@ -11,3 +12,8 @@ class DetailServiceView(views.DetailView):
 
     def get_object(self, queryset=queryset):
         return queryset.get(pk=self.kwargs['pk'])
+
+
+def get_service_duration(request, pk):
+    service = Service.objects.get(pk=pk)
+    return JsonResponse({'duration': service.duration})
