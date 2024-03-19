@@ -1,6 +1,9 @@
 from datetime import timedelta
+
+from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 # Create your models here.
 
@@ -34,13 +37,26 @@ class Booking(models.Model):
     hairdresser = models.ForeignKey(
         to=HairDresser,
         on_delete=models.CASCADE,
-        related_name='bookings'
+        related_name='bookings',
     )
 
-    def save(self, *args, **kwargs):
-        duration = self.service.duration
-        self.end = self.start + timedelta(minutes=duration)
-        super().save(*args, **kwargs)
+    def get_hairdresser(self):
+        """
+        this method get available hairdresser based on date/time of the booking and service required
+        """
+        capable_hairdressers = HairDresser.objects.filter(services__id=self.service.id)
+        available_hairdressers = []
+
+        for hairdresser in capable_hairdressers:
+            # Check if the hairdresser has bookings that conflict with the requested time.
+            conflicting_bookings = hairdresser.bookings.filter(
+                date=self.date, start__lt=self.end, end__gt=self.start)
+
+            # If there are no conflicting bookings, the hairdresser is available.
+            if not conflicting_bookings.exists():
+                available_hairdressers.append(hairdresser)
+
+        return available_hairdressers
 
     class Meta:
         ordering = ['-date', '-start']

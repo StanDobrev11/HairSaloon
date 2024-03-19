@@ -137,3 +137,10 @@ LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles/media')
 MEDIA_URL = '/media/'
+
+DATE_INPUT_FORMATS = [
+    '%Y-%m-%d',
+    '%m/%d/%Y',
+    '%m/%d/%y',
+    '%d.%m.%Y'
+]

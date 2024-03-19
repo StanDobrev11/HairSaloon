@@ -1,9 +1,12 @@
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.core.serializers import serialize
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic as views
 
+from HairSaloon import bookings
 from HairSaloon.bookings.forms import BookingForm
 from HairSaloon.bookings.models import Booking
 
@@ -31,7 +34,6 @@ def bookings_json(request):
     return JsonResponse(booking_list, safe=False)
 
 
-
 class BookingView(views.FormView):
     # template_name = 'bookings/calendar.html'
     template_name = 'bookings/dashboard.html'
@@ -39,16 +41,19 @@ class BookingView(views.FormView):
     # success_url = reverse_lazy('success_page')
     success_url = HttpResponse('Success')
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     bookings = Booking.objects.all()
-    #     booking_list = serialize('json', bookings)
-    #
-    #     return JsonResponse(booking_list, safe=False)
-    # def form_valid(self, form):
-    #     # This method is called when valid form data has been POSTed.
-    #     # Here, you can handle the booking logic.
-    #     booking_date = form.cleaned_data['date']
-    #     booking_time = form.cleaned_data['time']
-    #     # Logic to create an Appointment object...
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        booking = form.save(commit=False)
+        booking.user = self.request.user
+
+        available_hairdresser = Booking.get_hairdresser(booking)
+
+        if available_hairdresser:
+            booking.hairdresser = available_hairdresser[0]
+            booking.save()
+            messages.success(self.request, 'Your booking has been successfully created.')
+            return super().form_valid(form)
+        else:
+            # Instead of using form_invalid, manually add an error to the form
+            # and re-render the template with the form containing errors.
+            form.add_error(None, 'No hairdresser available for the selected date/time.')
+            return self.render_to_response(self.get_context_data(form=form))

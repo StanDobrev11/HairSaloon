@@ -45,6 +45,19 @@
 
                 <!-- Link or button to initiate a new booking -->
                 <a href="#" class="btn">Make a New Booking</a>
+                <form action="{% url 'dashboard' %}" method="post">
+                    {{ form }}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn login-btn">Create Booking</button>
+                    {% csrf_token %}
+                </form>
             </div>
 
             {% include 'partials/footer.html' %}
