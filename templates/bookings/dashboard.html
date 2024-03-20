@@ -66,7 +66,8 @@
                 <div class="new_booking">
                     <button class="toggle-button">Book an Appointment</button>
                     <div id="new_booking" style="display: none;">
-
+                        
+                        <div id="user-role" data-role="{{ user_role }}" style="display:none;"></div>
                         <form action="{% url 'dashboard' %}" method="post">
                             <p>Date: {{ form.date }}</p>
                             <p>Service: {{ form.service }}</p> <!-- Django renders the actual select element -->
@@ -94,6 +95,8 @@
                     {% endif %}
                 </div>
             </div>
+
+
             {% include 'partials/footer.html' %}
             {% include 'partials/script_other_page.html' %}
             {% include 'partials/script_calendar.html' %}

@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
+from HairSaloon.bookings import validators
 # Create your models here.
 
 
@@ -21,7 +22,12 @@ def bookings_directory_path(instance, filename=None):
 
 class Booking(models.Model):
     date = models.DateField()
-    start = models.TimeField()
+    start = models.TimeField(
+        validators=[
+            validators.open_hour_validator,
+            validators.close_hour_validator,
+        ]
+    )
     end = models.TimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -52,6 +58,9 @@ class Booking(models.Model):
         on_delete=models.CASCADE,
         related_name='bookings',
     )
+
+    def check_times_overlap(self, all_bookings):
+        pass
 
     def get_hairdresser(self):
         """

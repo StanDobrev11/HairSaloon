@@ -1,7 +1,11 @@
+from datetime import date
+
 from django.core.serializers import serialize
 from django.http import JsonResponse
 
+from HairSaloon import bookings
 from HairSaloon.bookings.models import Booking
+from HairSaloon.bookings.views import BookingView
 from HairSaloon.services.models import Service
 
 
@@ -12,18 +16,47 @@ def get_service_duration(request, pk):
     return JsonResponse({'duration': service.duration})
 
 
-def get_all_bookings(request):
-    all_bookings = Booking.objects.all().select_related('service')  # Use select_related to optimize DB queries
-
-    # Construct a list of dictionaries with the required fields
+def filter_bookings(all_bookings, current_user):
     bookings_data = []
-    for booking in all_bookings:
-        bookings_data.append({
-            'title': booking.service.name,  # Assuming 'name' is a field on your Service model
-            'start': booking.date.strftime("%Y-%m-%dT") + booking.start.strftime("%H:%M:%S"),
-            'end': booking.date.strftime("%Y-%m-%dT") + booking.end.strftime("%H:%M:%S"),
-            # Add more fields as necessary
-        })
+    if current_user.is_superuser:
+        for booking in all_bookings:
+            bookings_data.append({
+                'title': booking.service.name,  # Assuming 'name' is a field on your Service model
+                'start': booking.date.strftime("%Y-%m-%dT") + booking.start.strftime("%H:%M:%S"),
+                'end': booking.date.strftime("%Y-%m-%dT") + booking.end.strftime("%H:%M:%S"),
+                'price': booking.service.price,
+                'client': booking.user.full_name,
+                'hairdresser': booking.hairdresser.name,
+                'notes': booking.notes,
+            })
+    elif current_user.is_staff:
+        for booking in all_bookings.filter(user=current_user):
+            bookings_data.append({
+                'title': booking.service.name,  # Assuming 'name' is a field on your Service model
+                'start': booking.date.strftime("%Y-%m-%dT") + booking.start.strftime("%H:%M:%S"),
+                'end': booking.date.strftime("%Y-%m-%dT") + booking.end.strftime("%H:%M:%S"),
+                'price': booking.service.price,
+                'client': booking.user.full_name,
+                'notes': booking.notes,
+            })
+    else:
+        for booking in all_bookings.filter(date__gte=date.today()):
+            bookings_data.append({
+                'title': booking.service.name,  # Assuming 'name' is a field on your Service model
+                'start': booking.date.strftime("%Y-%m-%dT") + booking.start.strftime("%H:%M:%S"),
+                'end': booking.date.strftime("%Y-%m-%dT") + booking.end.strftime("%H:%M:%S"),
+                'price': booking.service.price,
+                'hairdresser': booking.hairdresser.name,
+                'notes': booking.notes,
+            })
 
-    # Convert the list of dictionaries to JSON
-    return JsonResponse(bookings_data, safe=False)
+    return bookings_data
+
+
+def get_all_bookings(request):
+    all_bookings = Booking.objects.prefetch_related()
+    current_user = request.user
+
+    result = filter_bookings(all_bookings, current_user)
+
+    return JsonResponse(result, safe=False)

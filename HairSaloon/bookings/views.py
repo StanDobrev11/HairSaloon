@@ -1,9 +1,11 @@
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from django.contrib import messages
 from django.core.serializers import serialize
+from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.shortcuts import render
 from django.views import generic as views
 
 from HairSaloon.accounts.models import Profile
@@ -21,12 +23,24 @@ class BookingView(views.FormView):
     # success_url = reverse_lazy('dashboard')
 
     def get_context_data(self, **kwargs):
+
+        user_role = None
+
         context = super(BookingView, self).get_context_data(**kwargs)
         bookings = Booking.objects.all().prefetch_related()
         context['bookings'] = bookings
         context['profile'] = Profile.objects.get(user=self.request.user)
         context['upcoming_bookings'] = bookings.filter(date__gte=datetime.today())
         context['passed_bookings'] = bookings.filter(date__lte=datetime.today())
+
+        if self.request.user.is_superuser:
+            user_role = 'admin'
+        elif self.request.user.is_staff:
+            user_role = 'staff'
+        elif self.request.user.is_authenticated:
+            user_role = 'client'
+
+        context['user_role'] = user_role
 
         return context
 
@@ -45,13 +59,20 @@ class BookingView(views.FormView):
 
         available_hairdresser = Booking.get_hairdresser(booking)
 
-        if available_hairdresser:
+        try:
             booking.hairdresser = available_hairdresser[0]
-            booking.save()
-            messages.success(self.request, 'Your booking has been successfully created.')
-            return self.render_to_response(self.get_context_data(form=self.form_class()))
-        else:
-            # Instead of using form_invalid, manually add an error to the form
-            # and re-render the template with the form containing errors.
+        except IndexError:
             form.add_error(None, 'No hairdresser available for the selected date/time.')
             return self.render_to_response(self.get_context_data(form=form))
+
+        if booking.date < date.today():
+            form.add_error(None, 'Cannot book in the PAST U FUCK!?!')
+            return self.render_to_response(self.get_context_data(form=form))
+
+        if booking.date == date.today() and booking.time <= datetime.now() + timedelta(minutes=60):
+            form.add_error(None, 'Cannot book this HOUR!!! Either is in the past or already exists!')
+            return self.render_to_response(self.get_context_data(form=form))
+
+        booking.save()
+        messages.success(self.request, 'Your booking has been successfully created.')
+        return self.render_to_response(self.get_context_data(form=self.form_class()))
