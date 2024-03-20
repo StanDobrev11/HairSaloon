@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'HairSaloon.bookings.apps.BookingsConfig',
     'HairSaloon.services.apps.ServicesConfig',
     'HairSaloon.hairdressers.apps.HairdressersConfig',
+    'HairSaloon.api.apps.ApisConfig',
 ]
 
 MIDDLEWARE = [

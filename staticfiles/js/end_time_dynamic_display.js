@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const startTime = startTimeInput.value;
 
         if (serviceId && startTime) {
-            fetch(`/services/api/get-service-duration/${serviceId}/`)
+            fetch(`/api/get-service-duration/${serviceId}/`)
                 .then(response => response.json())
                 .then(data => {
                     const duration = data.duration; // Assuming duration is in minutes

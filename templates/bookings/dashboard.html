@@ -27,7 +27,7 @@
                     <div id="bookings-list" style="display: none;">
                         {% if upcoming_bookings %}
                             {% for booking in upcoming_bookings %}
-                                <p>{{ booking.date }}: {{ booking.service }}</p>
+                                <p>{{ booking.date }} at {{ booking.start }}: {{ booking.service }}</p>
                             {% endfor %}
                         {% else %}
                             <p>No bookings yet!</p>
@@ -66,35 +66,43 @@
                 <div class="new_booking">
                     <button class="toggle-button">Book an Appointment</button>
                     <div id="new_booking" style="display: none;">
-                        
+
                         <form action="{% url 'dashboard' %}" method="post">
                             <p>Date: {{ form.date }}</p>
-                            <p>Start time: {{ form.start }}</p> <!-- Django renders the actual input element -->
                             <p>Service: {{ form.service }}</p> <!-- Django renders the actual select element -->
+                            <p>Start time: {{ form.start }}</p> <!-- Django renders the actual input element -->
                             <p>Expected end: <span id="end_time_display">N/A</span></p>
                             <p>Notes: {{ form.notes }}</p>
-                            {% if form.non_field_errors %}
-                                <div class="alert alert-danger">
-                                    {% for error in form.non_field_errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
 
-                            <button type="submit" class="btn login-btn">Create Booking</button>
+
+                            <button type="submit" class="btn login-btn">BOOK</button>
                             {% csrf_token %}
                         </form>
                     </div>
-
-                    {% include 'partials/footer.html' %}
-                    {% include 'partials/script_other_page.html' %}
-                    {% include 'partials/script_calendar.html' %}
-                    <script src="{% static 'js/calendar.js' %}"></script>
-                    <script src="{% static 'js/end_time_dynamic_display.js' %}"></script>
-                    <script src="{% static 'js/toggle_button_collapse.js' %}"></script>
-
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% elif messages %}
+                        <div class="alert alert-danger">
+                            {% for msg in messages %}
+                                {{ msg }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
+            {% include 'partials/footer.html' %}
+            {% include 'partials/script_other_page.html' %}
+            {% include 'partials/script_calendar.html' %}
+            <script src="{% static 'js/calendar.js' %}"></script>
+            <script src="{% static 'js/end_time_dynamic_display.js' %}"></script>
+            <script src="{% static 'js/toggle_button_collapse.js' %}"></script>
+
+        </div>
+    </div>
     </body>
 
 {% endblock %}

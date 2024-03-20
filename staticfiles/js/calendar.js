@@ -27,30 +27,27 @@ document.addEventListener('DOMContentLoaded', function () {
         },
 
 
-        events:
-            [
-                {
-                    title: 'Meeting',
-                    start: '2024-03-20T14:30:00',
-                    extendedProps: {
-                        status: 'done'
-                    }
-                },
-                {
-                    title: 'Birthday Party',
-                    start: '2024-03-21T07:00:00',
-                    backgroundColor: 'green',
-                    borderColor: 'green'
-                }
-            ],
+        events: function (fetchInfo, successCallback, failureCallback) {
+            fetch('/api/get-all-bookings/')
+                .then(function (response) {
+                    return response.json(); // This already converts the JSON string to a JavaScript object/array
+                })
+                .then(function (bookings) {
+                    successCallback(bookings); // Directly use the bookings data, no need for JSON.parse
+                })
+                .catch(function (error) {
+                    console.error("Error fetching bookings:", error);
+                    failureCallback(error);
+                });
+        },
 
         // functions
-        dateClick: function (info) {
-            alert('clicked ' + info.dateStr);
-        },
-        select: function (info) {
-            alert('selected ' + info.startStr + ' to ' + info.endStr);
-        }
+        // dateClick: function (info) {
+        //     alert('clicked ' + info.dateStr);
+        // },
+        // select: function (info) {
+        //     alert('selected ' + info.startStr + ' to ' + info.endStr);
+        // }
     });
 
 

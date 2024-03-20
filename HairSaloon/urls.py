@@ -26,6 +26,7 @@ urlpatterns = [
     path('dashboard/', include('HairSaloon.bookings.urls')),
     path('services/', include('HairSaloon.services.urls')),
     path('personel/', include('HairSaloon.hairdressers.urls')),
+    path('api/', include('HairSaloon.api.urls')),
 
 ]
 

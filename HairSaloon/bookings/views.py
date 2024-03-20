@@ -13,28 +13,11 @@ from HairSaloon.bookings.models import Booking
 
 # Create your views here.
 
-def bookings_json(request):
-    # bookings = [
-    #     {
-    #         "title": "Haircut with John",
-    #         "start": "2024-03-21T13:30:00",
-    #         "end": "2024-03-21T14:00:00"
-    #     },
-    #     {
-    #         "title": "Coloring with Jane",
-    #         "start": "2024-03-22T12:00:00",
-    #         "end": "2024-03-22T13:30:00"
-    #     }
-    # ]
-    # return JsonResponse(bookings, safe=False)
-    bookings = Booking.objects.all()
-    booking_list = serialize('json', bookings, fields=('service', 'date', 'time'))
-    return JsonResponse(booking_list, safe=False)
-
 
 class BookingView(views.FormView):
     template_name = 'bookings/dashboard.html'
     form_class = BookingForm
+
     # success_url = reverse_lazy('dashboard')
 
     def get_context_data(self, **kwargs):
