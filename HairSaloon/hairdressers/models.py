@@ -12,33 +12,24 @@ class HairDresser(models.Model):
     This model is created via ADMIN site.
 
     The model is used to define the hairdresser working in the salon and
-    return details to the templates.
+    returns details to the templates.
+
     It has a relation to the provided services so each hairdresser provides
     all or part of the listed services.
+
     The photo of the hairdresser should be considered as the account photo.
+
     When a user is created and the user is a hairdresser, the is_staff should be ticked
     and staff access provided.
-    The user and hairdresser models linked.
+
     When a new hairdresser is employed, the information below should be completed
     in full
     """
 
-    GENDER_CHOICES = (
-        ('male', 'male'),
-        ('female', 'female'),
-    )
-
     BACKGROUND_MAX_LENGTH = 500
-    GENDER_MAX_LENGTH = 6
-    NAME_MAX_LENGTH = 150
-    PHOTO_UPLOAD_DIR = 'hairdressers/'
 
-    name = models.CharField(max_length=NAME_MAX_LENGTH)
-    date_of_birth = models.DateField(blank=True, null=True)
-    background = models.TextField(max_length=500, blank=True, null=True)
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, blank=True, null=True)
-    working_since = models.DateField(blank=True, null=True)
-    photo = models.ImageField(upload_to=PHOTO_UPLOAD_DIR, blank=True, null=True)
+    background = models.TextField(max_length=500)
+    working_since = models.DateField()
 
     # Provides link to services available and handled by the hairdresser
     services = models.ManyToManyField(
@@ -56,7 +47,11 @@ class HairDresser(models.Model):
 
     @property
     def age(self):
-        return datetime.today().year - self.date_of_birth.year
+        if self.user.profile.date_of_birth:
+            today = datetime.today()
+            return today.year - self.user.profile.date_of_birth.year - ((today.month, today.day) < (
+                self.user.profile.date_of_birth.month, self.user.profile.date_of_birth.day))
+        return None
 
     def __str__(self):
-        return self.name
+        return self.user.full_name

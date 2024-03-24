@@ -79,7 +79,7 @@ class Profile(models.Model):
     # to create profile when creating user, we should use signals
 
     # making the folder dynamic and created bss user pk
-    user_photo = models.ImageField(
+    account_photo = models.ImageField(
         upload_to=user_directory_path,
         blank=True,
         null=True,
