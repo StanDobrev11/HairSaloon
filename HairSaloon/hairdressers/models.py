@@ -1,6 +1,10 @@
 from datetime import datetime
+
+from django.contrib.auth import get_user_model
 from django.db import models
 from HairSaloon.services.models import Service
+
+UserModel = get_user_model()
 
 
 class HairDresser(models.Model):
@@ -35,9 +39,19 @@ class HairDresser(models.Model):
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, blank=True, null=True)
     working_since = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to=PHOTO_UPLOAD_DIR, blank=True, null=True)
+
+    # Provides link to services available and handled by the hairdresser
     services = models.ManyToManyField(
         to=Service,
         related_name='hairdressers'
+    )
+
+    # Allows the creation of a HairDresser without an associated user
+    user = models.OneToOneField(
+        to=UserModel,
+        on_delete=models.CASCADE,
+        related_name='hairdresser_profile',
+        null=True,
     )
 
     @property
