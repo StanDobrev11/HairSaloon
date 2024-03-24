@@ -9,6 +9,6 @@ class BookingForm(forms.ModelForm):
         fields = ['date', 'start', 'end', 'service', 'notes']
 
         widgets = {
-            'date': forms.DateInput(format='%d.%m.%Y', attrs={'type': 'date'}),
+            'date': forms.DateInput(format='%d/%m/%Y', attrs={'type': 'date'}),
         }
 

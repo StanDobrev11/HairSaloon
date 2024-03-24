@@ -64,7 +64,7 @@ class Booking(models.Model):
 
     def get_hairdresser(self):
         """
-        this method get available hairdresser based on date/time of the booking and service required
+        this method gets available hairdresser based on date/time of the booking and service required
         """
         capable_hairdressers = HairDresser.objects.filter(services__id=self.service.id)
         available_hairdressers = []
