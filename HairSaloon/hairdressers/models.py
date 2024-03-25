@@ -29,7 +29,7 @@ class HairDresser(models.Model):
     BACKGROUND_MAX_LENGTH = 500
 
     background = models.TextField(max_length=500)
-    working_since = models.DateField()
+    working_since = models.DateField(blank=True, null=True)
 
     # Provides link to services available and handled by the hairdresser
     services = models.ManyToManyField(

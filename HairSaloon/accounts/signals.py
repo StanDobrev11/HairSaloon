@@ -1,3 +1,5 @@
+import traceback
+
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -9,19 +11,28 @@ from HairSaloon.hairdressers.models import HairDresser
 # the model should be manually added in the apps file of the app module
 # and append the Config class to have a method ready()
 
+
 UserModel = get_user_model()
 
 
 @receiver(post_save, sender=UserModel)
-def user_created_signal(sender, instance, created, **kwargs):
-    # will be executed on every user save
-    # if created -> only when created
-    # sender is the class -> UserModel
-    # instance is the current user saved in the db
-    # created is bool returning True if is newly created and a first save
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    # print(traceback.format_stack())
+    # print(created)
+    # print(instance)
+    if created:
+        return Profile.objects.create(user=instance)
 
-    if not created:  # this means 'if updated'
-        if instance.is_staff:
-            HairDresser.objects.get_or_create(user=instance)
+    if instance.is_superuser:
+        return
 
-    Profile.objects.create(user=instance)
+    if instance.is_staff:
+        return HairDresser.objects.get_or_create(user=instance)
+    else:
+        try:
+            HairDresser.objects.get(user=instance).delete()
+        except HairDresser.DoesNotExist:
+            pass
+
+    # profile, created = Profile.objects.get_or_create(user=instance)
+    # pass
