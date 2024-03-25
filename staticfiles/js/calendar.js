@@ -48,33 +48,29 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
 
-            events: function (fetchInfo, successCallback, failureCallback) {
-                fetch('/api/get-all-bookings')
-                    .then(function (response) {
-                        return response.json();
-                    })
-                    .then(function (bookings) {
-                        const events = bookings.map(booking => {
-                            let event = {
-                                start: booking.start,
-                                end: booking.end,
-                                title: 'test',
-                            };
+            events: function(fetchInfo, successCallback, failureCallback) {
+            fetch('/api/get-all-bookings')
+                .then(function(response) { return response.json(); })
+                .then(function(bookings) {
+                    const events = bookings.map(booking => {
 
-                            if (userRole === 'admin') {
-                                event.title = booking.title; // Adjust according to your actual data structure
-                                event.backgroundColor = 'green'; // Example color for admin's or specific user's own booking
-                            } else if (userRole === 'staff') {
-                                // Limited detail for staff
-                                event.title = 'Occupied';
-                                event.backgroundColor = 'red'; // Example color for occupied times
-                            } else if (userRole === 'client') {
-                                // Assuming a 'client' role wants to see limited details
-                                event.title = 'Booking';
-                                // event.backgroundColor = 'black'; // Example color for available times
-                            }
-                            return event;
-                        });
+                        let backgroundColor = 'red'; // Default color
+                        let bookingTitle = booking.title;
+
+                        if (userRole === 'superuser') {
+                            backgroundColor = 'blue';
+                        } else if ((userRole === 'client' && booking.isOwner)
+                            || (userRole === 'staff' && booking.isHairDresser)) {
+                            backgroundColor = 'green';
+                        }
+                        return {
+                            title: bookingTitle,
+                            start: booking.start,
+                            end: booking.end,
+                            backgroundColor: backgroundColor,
+                            // Add other event properties as needed
+                        };
+                    });
 
                         successCallback(events);
                     })
