@@ -52,27 +52,46 @@ class BookingView(views.FormView):
 
         return end_datetime.time()
 
+    def check_booking_conflicts(self, new_booking, all_bookings, form):
+        """ checks booking conflicts with existing bookings """
+
+        if all_bookings.filter(date=new_booking.date, end__gte=new_booking.start, start__lte=new_booking.end).exists():
+            form.add_error(None, 'Date/Time already taken!')
+            return False
+
+        if new_booking.date < date.today():
+            form.add_error(None, 'Cannot book in the past!')
+            return False
+
+        if new_booking.date == date.today() and new_booking.start <= timezone.now() + timedelta(minutes=60):
+            form.add_error(None, 'Booking must be made at least 1 hour in advance.')
+            return False
+
+        return True
+
     def form_valid(self, form):
-        booking = form.save(commit=False)
-        booking.user = self.request.user
-        booking.end = self.get_end_time(booking)
+        new_booking = form.save(commit=False)
+        new_booking.user = self.request.user
+        new_booking.end = self.get_end_time(new_booking)
+        all_bookings = Booking.objects.prefetch_related()
 
-        available_hairdresser = Booking.get_hairdresser(booking)
+        if not self.check_booking_conflicts(new_booking, all_bookings, form):
+            return self.form_invalid(form)
 
-        try:
-            booking.hairdresser = available_hairdresser[0]
-        except IndexError:
-            form.add_error(None, 'No hairdresser available for the selected date/time.')
-            return self.render_to_response(self.get_context_data(form=form))
+        if new_booking.user.is_staff:
+            # TODO staff logic -> display all bookings, the logged hairdresser in diff colors
+            pass
 
-        if booking.date < date.today():
-            form.add_error(None, 'Cannot book in the PAST U FUCK!?!')
-            return self.render_to_response(self.get_context_data(form=form))
+        elif new_booking.user.is_authenticated:
 
-        if booking.date == date.today() and booking.time <= datetime.now() + timedelta(minutes=60):
-            form.add_error(None, 'Cannot book this HOUR!!! Either is in the past or already exists!')
-            return self.render_to_response(self.get_context_data(form=form))
+            available_hairdresser = Booking.get_hairdresser(new_booking)
 
-        booking.save()
+            try:
+                new_booking.hairdresser = available_hairdresser[0]
+            except IndexError:
+                form.add_error(None, 'No hairdresser available for the selected date/time.')
+                return self.render_to_response(self.get_context_data(form=form))
+
+        new_booking.save()
         messages.success(self.request, 'Your booking has been successfully created.')
         return self.render_to_response(self.get_context_data(form=self.form_class()))

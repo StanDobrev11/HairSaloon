@@ -60,7 +60,11 @@ class Booking(models.Model):
     )
 
     def check_times_overlap(self, all_bookings):
-        pass
+        """
+        the method should check if current booking time is overlapping with previous user's booking.
+        """
+        user_bookings = all_bookings.filter(user=self.user)
+
 
     def get_hairdresser(self):
         """

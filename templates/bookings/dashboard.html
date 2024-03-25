@@ -37,7 +37,7 @@
                     <div id="bookings-list" style="display: none;">
                         {% if upcoming_bookings %}
                             {% for booking in upcoming_bookings %}
-                                <p>{{ booking.date }} at {{ booking.start }}: {{ booking.service }}</p>
+                                <p><a href="#">{{ booking.date }} at {{ booking.start }}: {{ booking.service }} by {{ booking.hairdresser }}</a></p>
                             {% endfor %}
                         {% else %}
                             <p>No bookings yet!</p>
