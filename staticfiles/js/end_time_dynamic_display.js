@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const startTimeInput = document.getElementById('id_start'); // Adjust the ID as necessary
     const endTimeDisplay = document.getElementById('end_time_display'); // You need to add this element in HTML
 
+
     const updateEndTime = () => {
         const serviceId = serviceSelect.value;
         const startTime = startTimeInput.value;

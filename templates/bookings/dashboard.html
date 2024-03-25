@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block content %}
-    
+
     <body style="background-image:url('{% static 'img/bg5.jpg' %}');background-attachment:fixed;background-size:cover;">
-    <link href="{% static 'css/dashboard_style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     {% include 'partials/menu_and_calendar.html' %}
     <div class="container">
 
@@ -19,7 +19,18 @@
             <i class="iconstartitle textmagenta fa fa-star"></i>
 
             <div class="bookings-container">
-                <h1 class="entry-title">Welcome, {{ profile.user }}</h1>
+                <div class="title-and-buttons">
+                    <h1 class="entry-title">Welcome, {{ profile.user }}</h1>
+                    <div class="edit-delete-btns">
+                        <a href="{% url 'edit user' pk=user.pk %}">
+                            <img class="edit-img" src="{% static 'img/edit-pen-icon-6.jpg' %}" alt="edit button">
+                        </a>
+                        <a href="#">
+                            <img class="bin-img" src="{% static 'img/icon-remove-22.jpg' %}" alt="bin button">
+                        </a>
+                    </div>
+                </div>
+
 
                 <div class="upcoming-bookings">
                     <button class="toggle-button">Upcoming Bookings</button>
@@ -104,8 +115,8 @@
     {% include 'partials/footer.html' %}
     {% include 'partials/script_other_page.html' %}
     {% include 'partials/script_calendar.html' %}
-    <script src="{% static 'js/calendar.js' %}"></script>
     <script src="{% static 'js/end_time_dynamic_display.js' %}"></script>
+    <script src="{% static 'js/calendar.js' %}"></script>
     <script src="{% static 'js/toggle_button_collapse.js' %}"></script>
     </body>
 

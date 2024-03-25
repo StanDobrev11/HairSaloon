@@ -1,5 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import mixins as auth_mixins, get_user_model
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -10,7 +14,8 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
-from HairSaloon.accounts.forms import HairSaloonUserCreationForm
+from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserEditForm, \
+    HairSaloonUserPasswordChangeForm
 
 UserModel = get_user_model()
 
@@ -63,17 +68,28 @@ class RegisterUserView(views.CreateView):
         return valid
 
 
-class ProfileUserView(auth_mixins.LoginRequiredMixin, views.TemplateView):
-    # model = UserModel
-    template_name = 'accounts/profile.html'
+class HairSalonEditUserView(LoginRequiredMixin, views.UpdateView):
+    template_name = 'accounts/edit.html'
+    queryset = UserModel.objects.all()
+    fields = ['first_name', 'last_name', 'phone_number', ]
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['profile'] = UserModel.objects.get(pk=self.request.user.pk)
-        return context
+    def get_success_url(self):
+        return reverse_lazy('edit user', kwargs={'pk': self.object.pk})
 
+
+class HairSalonPasswordChangeView(PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    form_class = HairSaloonUserPasswordChangeForm
+
+    def get_success_url(self):
+        user = self.request.user
+        return reverse_lazy('edit user', kwargs={'pk': user.pk})
+
+    def form_valid(self, form):
+        form = super().form_valid(form)
+        messages.success(self.request, 'Your password has been updated!')
+        return form
 
 def logout_view(request):
     logout(request)
-
     return redirect('index')

@@ -42,11 +42,11 @@ def filter_bookings(all_bookings, current_user):
     else:
         for booking in all_bookings.filter(date__gte=date.today()):
             bookings_data.append({
-                'title': booking.service.name,  # Assuming 'name' is a field on your Service model
+                'title': booking.service.name,
                 'start': booking.date.strftime("%Y-%m-%dT") + booking.start.strftime("%H:%M:%S"),
                 'end': booking.date.strftime("%Y-%m-%dT") + booking.end.strftime("%H:%M:%S"),
                 'price': booking.service.price,
-                'hairdresser': booking.hairdresser.name,
+                'hairdresser': booking.hairdresser.user.full_name,
                 'notes': booking.notes,
             })
 

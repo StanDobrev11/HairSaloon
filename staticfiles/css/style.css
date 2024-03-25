@@ -1056,6 +1056,24 @@ ul li {
     transition: all 0.3s ease-out;
 }
 
+.title-and-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-delete-btns {
+    display: flex;
+    align-items: center;
+}
+
+.edit-img, .bin-img {
+    width: 24px; /* Adjust size as needed */
+    height: auto;
+    margin-left: 10px; /* Space between buttons */
+}
+
+
 .error-messages li {
     color: #b94a48; /* Dark red; adjust color as needed */
     background-color: #f2dede; /* Light red background */

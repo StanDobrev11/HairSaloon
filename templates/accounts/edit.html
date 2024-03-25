@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+
+{% load static %}
+
+{% block content %}
+
+    <body style="background-image:url('{% static 'img/bg6.jpg' %}');background-attachment:fixed;background-size:cover;">
+
+    {% include 'partials/menu_and_calendar.html' %}
+
+    <div class="container">
+        <div class="logoarea">
+            <div class="intro">
+                <h1><span class="smaller wow zoomIn" data-wow-duration="2s" data-wow-delay="0.5">1044 Madison Avenue, New York, NY 10075, US</span>
+                    <span class="big wow pulse" data-wow-duration="1s" data-wow-delay="0s">Beauttio</span>
+                    <span class="small wow fadeIn" data-wow-duration="2s" data-wow-delay="0.5s">- HAIR SALON -</span>
+                </h1>
+            </div>
+        </div>
+        <div class="pagearea">
+            <h1 class="page-headline">EDIT PROFILE</h1>
+            <i class="iconstartitle textmagenta fa fa-user"></i>
+
+            <div class="edit-container">
+                <div class="edit-form-content">
+                    <form action="{% url 'edit user' pk=user.pk %}" method="post">
+                        
+                        {{ form.as_p }}
+
+
+                        {% csrf_token %}
+                        <p><button type="submit" class="btn login-btn">Save</button></p>
+                        
+                        <p><button type="reset" class="btn login-btn">Reset</button></p>
+                        
+                        <a href="{% url 'password change' pk=user.pk %}">Change password??</a> 
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        {% if messages %}
+            <ul class="error-messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="clearfix"></div>
+    {% include 'partials/footer.html' %}
+
+    <!-- Scripts -->
+    {% include 'partials/script_other_page.html' %}
+
+    </body>
+
+{% endblock %}
