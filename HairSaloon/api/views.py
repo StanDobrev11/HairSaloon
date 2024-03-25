@@ -16,6 +16,15 @@ def get_service_duration(request, pk):
     return JsonResponse({'duration': service.duration})
 
 
+def get_all_bookings(request):
+    all_bookings = Booking.objects.prefetch_related()
+    current_user = request.user
+
+    result = filter_bookings(all_bookings, current_user)
+
+    return JsonResponse(result, safe=False)
+
+
 def filter_bookings(all_bookings, current_user):
     bookings_data = []
     if current_user.is_superuser:
@@ -51,12 +60,3 @@ def filter_bookings(all_bookings, current_user):
             })
 
     return bookings_data
-
-
-def get_all_bookings(request):
-    all_bookings = Booking.objects.prefetch_related()
-    current_user = request.user
-
-    result = filter_bookings(all_bookings, current_user)
-
-    return JsonResponse(result, safe=False)

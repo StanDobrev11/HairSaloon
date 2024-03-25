@@ -21,18 +21,7 @@ class BookingView(views.FormView):
     form_class = BookingForm
 
     # success_url = reverse_lazy('dashboard')
-
-    def get_context_data(self, **kwargs):
-
-        user_role = None
-
-        context = super(BookingView, self).get_context_data(**kwargs)
-        bookings = Booking.objects.all().prefetch_related()
-        context['bookings'] = bookings
-        context['profile'] = Profile.objects.get(user=self.request.user)
-        context['upcoming_bookings'] = bookings.filter(date__gte=datetime.today())
-        context['passed_bookings'] = bookings.filter(date__lte=datetime.today())
-
+    def set_user_role(self, user_role=None):
         if self.request.user.is_superuser:
             user_role = 'admin'
         elif self.request.user.is_staff:
@@ -40,7 +29,17 @@ class BookingView(views.FormView):
         elif self.request.user.is_authenticated:
             user_role = 'client'
 
-        context['user_role'] = user_role
+        return user_role
+
+    def get_context_data(self, **kwargs):
+
+        context = super(BookingView, self).get_context_data(**kwargs)
+        bookings = Booking.objects.all().prefetch_related()
+        context['bookings'] = bookings
+        context['profile'] = Profile.objects.get(user=self.request.user)
+        context['upcoming_bookings'] = bookings.filter(date__gte=datetime.today(), user=self.request.user)
+        context['passed_bookings'] = bookings.filter(date__lte=datetime.today(), user=self.request.user)
+        context['user_role'] = self.set_user_role()
 
         return context
 
