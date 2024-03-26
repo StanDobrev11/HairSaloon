@@ -94,4 +94,5 @@ class Profile(models.Model):
         to=HairSaloonUser,
         primary_key=True,
         on_delete=models.CASCADE,
+        related_name='profile'
     )

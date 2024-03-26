@@ -140,3 +140,26 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles/media')
 MEDIA_URL = '/media/'
 
 DATE_FORMAT = 'd.m.Y'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'db_queries.log',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console', 'file'],  # Use 'console' or 'file' or both.
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}

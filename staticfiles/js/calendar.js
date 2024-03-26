@@ -54,12 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         return response.json();
                     })
                     .then(function (bookings) {
-                        const events = bookings.map(booking => {
-
-                            let backgroundColor = 'red'; // Default color
-                            let textColor = 'white';
+                        const events = bookings.filter(booking => {
+                            const excludeBooking = userRole === 'staff' && !booking.isHairDresser && booking.isCancelled;
+                            // console.log(`Booking: ${booking.title}, Exclude: ${excludeBooking}`);
+                            return !excludeBooking;
+                        }).map(booking => {
+                            let backgroundColor = 'red'; // Default color for others
                             let bookingTitle = booking.title;
-
+                            let textColor = 'white'; // Default text color
 
                             if (userRole === 'superuser') {
                                 backgroundColor = 'blue';
@@ -68,18 +70,19 @@ document.addEventListener('DOMContentLoaded', function () {
                             } else if (userRole === 'staff' && booking.isHairDresser) {
                                 backgroundColor = 'green';
                                 if (booking.isCancelled) {
-                                    bookingTitle = 'Cancelled'
-                                    backgroundColor = 'yellow'
-                                    textColor = 'black'
+                                    bookingTitle += ' Cancelled';
+                                    textColor = 'black';
+                                    backgroundColor = 'orange';
                                 }
                             }
+                            // Since bookings that meet the exclusion condition are already filtered out,
+                            // we don't need an else case for it here.
                             return {
                                 title: bookingTitle,
                                 start: booking.start,
                                 end: booking.end,
                                 backgroundColor: backgroundColor,
                                 textColor: textColor,
-                                // Add other event properties as needed
                             };
                         });
 

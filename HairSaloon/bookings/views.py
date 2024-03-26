@@ -17,6 +17,7 @@ from HairSaloon.bookings.models import Booking
 class BookingView(views.FormView):
     template_name = 'bookings/dashboard.html'
     form_class = BookingForm
+    all_bookings = Booking.objects.select_related('service', 'user', 'hairdresser__user').all()
 
     # success_url = reverse_lazy('dashboard')
     def set_user_role(self, user_role=None):
@@ -32,11 +33,11 @@ class BookingView(views.FormView):
     def get_context_data(self, **kwargs):
 
         context = super(BookingView, self).get_context_data(**kwargs)
-        bookings = Booking.objects.all().prefetch_related().order_by('date', 'start')
+        bookings = self.all_bookings.order_by('date', 'start')
         context['bookings'] = bookings
         context['profile'] = Profile.objects.get(user=self.request.user)
-        context['upcoming_bookings'] = bookings.filter(pending=True, user=self.request.user)
-        context['passed_bookings'] = bookings.filter(completed=True, user=self.request.user)
+        context['upcoming_bookings'] = bookings.filter(date__gte=datetime.today(), user=self.request.user)
+        context['passed_bookings'] = bookings.filter(date__lt=datetime.today(), user=self.request.user)
         context['user_role'] = self.set_user_role()
 
         return context
@@ -49,10 +50,10 @@ class BookingView(views.FormView):
 
         return end_datetime.time()
 
-    def check_booking_conflicts(self, new_booking, all_bookings, form):
+    def check_booking_conflicts(self, new_booking, existing_bookings, form):
         """ checks booking conflicts with existing bookings """
 
-        if all_bookings.filter(date=new_booking.date, end__gte=new_booking.start, start__lte=new_booking.end).exists():
+        if existing_bookings.filter(date=new_booking.date, end__gte=new_booking.start, start__lte=new_booking.end).exists():
             form.add_error(None, 'Date/Time already taken!')
             return False
 
@@ -74,9 +75,9 @@ class BookingView(views.FormView):
         new_booking = form.save(commit=False)
         new_booking.user = self.request.user
         new_booking.end = self.get_end_time(new_booking)
-        all_bookings = Booking.objects.prefetch_related()
+        existing_bookings = self.all_bookings
 
-        if not self.check_booking_conflicts(new_booking, all_bookings, form):
+        if not self.check_booking_conflicts(new_booking, existing_bookings, form):
             return self.form_invalid(form)
 
         if new_booking.user.is_staff:

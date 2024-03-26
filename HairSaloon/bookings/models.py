@@ -29,9 +29,7 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     notes = models.TextField(blank=True, null=True)
 
-    # bool fields to indicate status of the booking
-    pending = models.BooleanField(default=True)
-    completed = models.BooleanField(default=False)
+    # bool field to indicate status of the booking
     cancelled = models.BooleanField(default=False)
 
     # notifications

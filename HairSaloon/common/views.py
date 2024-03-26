@@ -14,4 +14,4 @@ class BlogView(views.TemplateView):
 
 class AboutView(views.ListView):
     template_name = 'common/about.html'
-    queryset = HairDresser.objects.all()
+    queryset = HairDresser.objects.select_related('user')

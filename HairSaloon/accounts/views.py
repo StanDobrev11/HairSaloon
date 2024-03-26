@@ -67,7 +67,7 @@ class RegisterUserView(views.CreateView):
 
 class HairSalonEditUserView(LoginRequiredMixin, views.UpdateView):
     template_name = 'accounts/edit.html'
-    queryset = UserModel.objects.all()
+    queryset = UserModel.objects.select_related('hairdresser_profile', 'profile').all()
     fields = ['first_name', 'last_name', 'phone_number', ]
 
     def get_success_url(self):
@@ -86,6 +86,7 @@ class HairSalonPasswordChangeView(PasswordChangeView):
         form = super().form_valid(form)
         messages.success(self.request, 'Your password has been updated!')
         return form
+
 
 def logout_view(request):
     logout(request)
