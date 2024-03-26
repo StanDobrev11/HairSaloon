@@ -29,27 +29,26 @@ def filter_bookings(all_bookings, current_user, request):
     bookings_data = []
     if current_user.is_superuser:
         for booking in all_bookings:
-            is_owner = booking.user == request.user
             bookings_data.append({
                 'title': booking.service.name,  # Assuming 'name' is a field on your Service model
                 'start': booking.date.strftime("%Y-%m-%dT") + booking.start.strftime("%H:%M:%S"),
                 'end': booking.date.strftime("%Y-%m-%dT") + booking.end.strftime("%H:%M:%S"),
                 'price': booking.service.price,
                 'client': booking.user.full_name,
-                'hairdresser': booking.hairdresser.name,
+                'hairdresser': booking.hairdresser.user.full_name,
                 'notes': booking.notes,
-                'isOwner': is_owner,
             })
     elif current_user.is_staff:
         for booking in all_bookings:
             is_hairdresser = booking.hairdresser == request.user.hairdresser_profile
             bookings_data.append({
-                'title': booking.service.name,  # Assuming 'name' is a field on your Service model
+                'title': booking.user.full_name if is_hairdresser else '',
                 'start': booking.date.strftime("%Y-%m-%dT") + booking.start.strftime("%H:%M:%S"),
                 'end': booking.date.strftime("%Y-%m-%dT") + booking.end.strftime("%H:%M:%S"),
                 'price': booking.service.price,
                 'client': booking.user.full_name,
                 'notes': booking.notes,
+                'hairdresser': booking.hairdresser.user.full_name,
                 'isHairDresser': is_hairdresser,
             })
     else:

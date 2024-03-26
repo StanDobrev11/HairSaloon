@@ -9,7 +9,7 @@ UserModel = get_user_model()
 
 class HairDresser(models.Model):
     """
-    This model is created via ADMIN site.
+    This model is created via ADMIN site, triggered by a signal when the user is assigned as 'staff'
 
     The model is used to define the hairdresser working in the salon and
     returns details to the templates.
@@ -37,7 +37,7 @@ class HairDresser(models.Model):
         related_name='hairdressers'
     )
 
-    # Allows the creation of a HairDresser without an associated user
+    # Allows the creation of a HairDresser without associated user
     user = models.OneToOneField(
         to=UserModel,
         on_delete=models.CASCADE,

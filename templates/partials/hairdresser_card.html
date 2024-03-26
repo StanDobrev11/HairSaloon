@@ -1,17 +1,20 @@
 <div class="hairdresser-detail-container">
     <div class="hairdresser-photo">
-        {% if hairdresser.photo %}
-            <img src="{{ hairdresser.photo.url }}" alt="{{ hairdresser.name }}">
+        {% if hairdresser.user.profile.account_photo %}
+            <img src="{{ hairdresser.user.profile.account_photo.url }}" alt="{{ hairdresser.name }}">
+            
         {% else %}
             <p>No photo available.</p>
         {% endif %}
+        
     </div>
+
     <div class="hairdresser-info">
-        <h2>{{ hairdresser.name }}</h2>
+        <h2>Name: {{ hairdresser.user.full_name }}</h2>
+        <p>Background: {{ hairdresser.background }}</p>
         <p>Age: {{ hairdresser.age }}</p>
-{#        <p>Gender: {{ hairdresser.gender }}</p>#}
         <p>Working With Us Since: {{ hairdresser.working_since }}</p>
-        <h3>Haircuts She Does:</h3>
+        <h3>Haircuts:</h3>
         <ul>
             {% for service in hairdresser.services.all %}
                 <li>
