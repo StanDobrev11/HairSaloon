@@ -103,6 +103,7 @@ class BookingDetailView(views.DetailView):
 
 
 class BookingDeleteView(views.DeleteView):
+    """ the deletion of the booking should be indicated ONLY by the FALSE in the booking.canceled field """
     template_name = 'bookings/booking_delete.html'
 
     def get_object(self, queryset=None):

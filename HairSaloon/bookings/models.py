@@ -32,8 +32,21 @@ class Booking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     notes = models.TextField(blank=True, null=True)
-    user_notified = models.BooleanField(default=False)
-    hairdresser_notified = models.BooleanField(default=False)
+
+    # bool fields to indicate status of the booking
+    pending = models.BooleanField(default=True)
+    completed = models.BooleanField(default=False)
+    cancelled = models.BooleanField(default=False)
+
+    # notifications
+    initial_user_notified = models.BooleanField(default=False)
+    initial_hairdresser_notified = models.BooleanField(default=False)
+    cancelled_user_notified = models.BooleanField(default=False)
+    cancelled_hairdresser_notified = models.BooleanField(default=False)
+    alter_user_notified = models.BooleanField(default=False)
+    alter_hairdresser_notified = models.BooleanField(default=False)
+
+    # photos
     pre_photo = models.ImageField(
         upload_to=bookings_directory_path,
         blank=True,
@@ -43,6 +56,7 @@ class Booking(models.Model):
         blank=True,
     )
 
+    # foreign keys
     user = models.ForeignKey(
         to=UserModel,
         on_delete=models.CASCADE,
