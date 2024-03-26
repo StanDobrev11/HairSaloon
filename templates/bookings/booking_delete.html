@@ -26,8 +26,8 @@
                     <div class="booking-detail-container">
                         <form action="{% url 'booking delete' pk=booking.pk %}" method="post">
                             {% csrf_token %}
-                            <h1 class="booking-title">Booking: {{ booking }}</h1>
-                            <p>Are you sure you want to cancel this booking?</p>
+                            <h1 class="booking-title">{{ booking }}</h1>
+                            <p>Are you sure you want to cancel the booking on {{ object.date }}</p>
                             <button type="submit" class="btn btn-primary">Yes</button>
                             <a href="{% url 'booking details' pk=booking.pk %}" class="btn btn-danger">No</a>
                         </form>

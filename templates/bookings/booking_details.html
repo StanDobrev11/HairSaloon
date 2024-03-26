@@ -23,48 +23,12 @@
 
             <div class="bookings-container">
                 <div class="title-and-buttons">
-                    
-                {% include 'partials/booking_card.html' %}
+
+                    {% include 'partials/booking_card.html' %}
 
 
-               
-
-
-                <div class="new_booking">
-                    <button class="toggle-button">Book an Appointment</button>
-                    <div id="new_booking" style="display: none;">
-
-                        <div id="user-role" data-role="{{ user_role }}" style="display:none;"></div>
-                        <form action="{% url 'dashboard' %}" method="post">
-                            <p>Select a Service: {{ form.service }}</p>
-                            <!-- Django renders the actual select element -->
-                            <p>Chosen Date: {{ form.date }}</p>
-
-                            <p>Start Time: {{ form.start }}</p> <!-- Django renders the actual input element -->
-                            <p>Expected End: <span id="end_time_display">N/A</span></p>
-                            <p>Notes: {{ form.notes }}</p>
-
-
-                            <button type="submit" class="btn login-btn">BOOK</button>
-                            {% csrf_token %}
-                        </form>
-                    </div>
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {% for error in form.non_field_errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% elif messages %}
-                        <div class="alert alert-danger">
-                            {% for msg in messages %}
-                                {{ msg }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
                 </div>
             </div>
-
 
         </div>
 

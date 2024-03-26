@@ -2,7 +2,7 @@ from datetime import timedelta, datetime, date
 from django.contrib import messages
 from django.core.serializers import serialize
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render
@@ -34,7 +34,7 @@ class BookingView(views.FormView):
     def get_context_data(self, **kwargs):
 
         context = super(BookingView, self).get_context_data(**kwargs)
-        bookings = Booking.objects.all().prefetch_related()
+        bookings = Booking.objects.all().prefetch_related().order_by('date', 'start')
         context['bookings'] = bookings
         context['profile'] = Profile.objects.get(user=self.request.user)
         context['upcoming_bookings'] = bookings.filter(date__gte=datetime.today(), user=self.request.user)
@@ -111,3 +111,14 @@ class BookingDeleteView(views.DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('dashboard')
+
+    def form_valid(self, form):
+        booking = self.get_object()
+
+        if booking.pending:
+            booking.cancelled = True
+            booking.pending = False
+
+        booking.save()
+        messages.success(self.request, 'Booking cancelled')
+        return HttpResponseRedirect('/dashboard/')
