@@ -59,13 +59,6 @@ class Booking(models.Model):
         related_name='bookings',
     )
 
-    def check_times_overlap(self, all_bookings):
-        """
-        the method should check if current booking time is overlapping with previous user's booking.
-        """
-        user_bookings = all_bookings.filter(user=self.user)
-
-
     def get_hairdresser(self):
         """
         this method gets available hairdresser based on date/time of the booking and service required

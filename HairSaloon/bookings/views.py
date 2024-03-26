@@ -82,7 +82,6 @@ class BookingView(views.FormView):
             pass
 
         elif new_booking.user.is_authenticated:
-
             available_hairdresser = Booking.get_hairdresser(new_booking)
 
             try:
@@ -94,3 +93,20 @@ class BookingView(views.FormView):
         new_booking.save()
         messages.success(self.request, 'Your booking has been successfully created.')
         return self.render_to_response(self.get_context_data(form=self.form_class()))
+
+
+class BookingDetailView(views.DetailView):
+    template_name = 'bookings/booking_details.html'
+
+    def get_object(self, queryset=None):
+        return Booking.objects.get(pk=self.kwargs['pk'])
+
+
+class BookingDeleteView(views.DeleteView):
+    template_name = 'bookings/booking_delete.html'
+
+    def get_object(self, queryset=None):
+        return Booking.objects.get(pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard')

@@ -9,67 +9,25 @@
     <div class="container">
 
         <div class="logoarea">
-            <div class="calendar-dashboard">
-                <div id="calendar"></div>
+            <div class="intro">
+                <h1><span class="smaller wow zoomIn" data-wow-duration="2s" data-wow-delay="0.5">1044 Madison Avenue, New York, NY 10075, US</span>
+                    <span class="big wow pulse" data-wow-duration="1s" data-wow-delay="0s">Beauttio</span>
+                    <span class="small wow fadeIn" data-wow-duration="2s" data-wow-delay="0.5s">- HAIR SALON -</span>
+                </h1>
             </div>
         </div>
 
         <div class="pagearea">
-            <h1 class="page-headline">BOOKINGS INFO</h1>
+            <h1 class="page-headline">BOOKING DETAILS</h1>
             <i class="iconstartitle textmagenta fa fa-star"></i>
 
             <div class="bookings-container">
                 <div class="title-and-buttons">
-                    <h1 class="entry-title">Welcome, {{ profile.user }}</h1>
-                    <div class="edit-delete-btns">
-                        <a href="{% url 'edit user' pk=user.pk %}">
-                            <img class="edit-img" src="{% static 'img/edit-pen-icon-6.jpg' %}" alt="edit button">
-                        </a>
-                        <a href="#">
-                            <img class="bin-img" src="{% static 'img/icon-remove-22.jpg' %}" alt="bin button">
-                        </a>
-                    </div>
-                </div>
+                    
+                {% include 'partials/booking_card.html' %}
 
 
-                <div class="upcoming-bookings">
-                    <button class="toggle-button">Upcoming Bookings</button>
-                    <div id="bookings-list" style="display: none;">
-                        {% if upcoming_bookings %}
-                            {% for booking in upcoming_bookings %}
-                                <p><a href="{% url 'booking details' pk=booking.pk %}">{{ booking.date }} at {{ booking.start }}: {{ booking }} by {{ booking.hairdresser }}</a></p>
-                            {% endfor %}
-                        {% else %}
-                            <p>No bookings yet!</p>
-                        {% endif %}
-                    </div>
-                </div>
-
-
-                <div class="booking-history">
-                    <button class="toggle-button">Booking History</button>
-                    <div id="history-list" style="display: none;">
-                        {% if passed_bookings %}
-                            {% for booking in passed_bookings %}
-                                <p>{{ booking.date }}: {{ booking.service }}</p>
-                                <div class="booking-photos">
-                                    <button class="toggle-button">Show Photos</button>
-                                    <div id="photos" style="display: none;">
-
-                                        <img class="pre-photo" src="{{ booking.pre_photo }}"
-                                             alt="No pre-photo uploaded!"/>
-
-                                        <img class="post-photo" src="{{ booking.post_photo }}"
-                                             alt="No post-photo uploaded!"/>
-
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p>No booking history available.</p>
-                        {% endif %}
-                    </div>
-                </div>
+               
 
 
                 <div class="new_booking">
