@@ -1,11 +1,9 @@
 from datetime import timedelta, datetime, date
+
 from django.contrib import messages
-from django.core.serializers import serialize
-from django.db.models import Q
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.shortcuts import render
 from django.views import generic as views
 
 from HairSaloon.accounts.models import Profile
@@ -37,8 +35,8 @@ class BookingView(views.FormView):
         bookings = Booking.objects.all().prefetch_related().order_by('date', 'start')
         context['bookings'] = bookings
         context['profile'] = Profile.objects.get(user=self.request.user)
-        context['upcoming_bookings'] = bookings.filter(date__gte=datetime.today(), user=self.request.user)
-        context['passed_bookings'] = bookings.filter(date__lte=datetime.today(), user=self.request.user)
+        context['upcoming_bookings'] = bookings.filter(pending=True, user=self.request.user)
+        context['passed_bookings'] = bookings.filter(completed=True, user=self.request.user)
         context['user_role'] = self.set_user_role()
 
         return context
@@ -62,7 +60,11 @@ class BookingView(views.FormView):
             form.add_error(None, 'Cannot book in the past!')
             return False
 
-        if new_booking.date == date.today() and new_booking.start <= timezone.now() + timedelta(minutes=60):
+        new_booking_datetime = datetime.combine(new_booking.date, new_booking.start)
+        new_booking_datetime = timezone.make_aware(new_booking_datetime, timezone.get_default_timezone())
+        current_datetime_plus_60_mins = timezone.now() + timedelta(minutes=60)
+
+        if new_booking_datetime <= current_datetime_plus_60_mins:
             form.add_error(None, 'Booking must be made at least 1 hour in advance.')
             return False
 

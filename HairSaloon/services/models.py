@@ -1,4 +1,5 @@
 from io import BytesIO
+
 import requests
 from django.core.files import File
 from django.db import models

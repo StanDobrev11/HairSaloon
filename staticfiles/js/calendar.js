@@ -48,29 +48,40 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
 
-            events: function(fetchInfo, successCallback, failureCallback) {
-            fetch('/api/get-all-bookings')
-                .then(function(response) { return response.json(); })
-                .then(function(bookings) {
-                    const events = bookings.map(booking => {
+            events: function (fetchInfo, successCallback, failureCallback) {
+                fetch('/api/get-all-bookings')
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (bookings) {
+                        const events = bookings.map(booking => {
 
-                        let backgroundColor = 'red'; // Default color
-                        let bookingTitle = booking.title;
+                            let backgroundColor = 'red'; // Default color
+                            let textColor = 'white';
+                            let bookingTitle = booking.title;
 
-                        if (userRole === 'superuser') {
-                            backgroundColor = 'blue';
-                        } else if ((userRole === 'client' && booking.isOwner)
-                            || (userRole === 'staff' && booking.isHairDresser)) {
-                            backgroundColor = 'green';
-                        }
-                        return {
-                            title: bookingTitle,
-                            start: booking.start,
-                            end: booking.end,
-                            backgroundColor: backgroundColor,
-                            // Add other event properties as needed
-                        };
-                    });
+
+                            if (userRole === 'superuser') {
+                                backgroundColor = 'blue';
+                            } else if (userRole === 'client' && booking.isOwner) {
+                                backgroundColor = 'green';
+                            } else if (userRole === 'staff' && booking.isHairDresser) {
+                                backgroundColor = 'green';
+                                if (booking.isCancelled) {
+                                    bookingTitle = 'Cancelled'
+                                    backgroundColor = 'yellow'
+                                    textColor = 'black'
+                                }
+                            }
+                            return {
+                                title: bookingTitle,
+                                start: booking.start,
+                                end: booking.end,
+                                backgroundColor: backgroundColor,
+                                textColor: textColor,
+                                // Add other event properties as needed
+                            };
+                        });
 
                         successCallback(events);
                     })

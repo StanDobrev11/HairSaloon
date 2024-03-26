@@ -1,11 +1,8 @@
 from datetime import date
 
-from django.core.serializers import serialize
 from django.http import JsonResponse
 
-from HairSaloon import bookings
 from HairSaloon.bookings.models import Booking
-from HairSaloon.bookings.views import BookingView
 from HairSaloon.services.models import Service
 
 
@@ -37,6 +34,9 @@ def filter_bookings(all_bookings, current_user, request):
                 'client': booking.user.full_name,
                 'hairdresser': booking.hairdresser.user.full_name,
                 'notes': booking.notes,
+                'isPending': booking.pending,
+                'isCompleted': booking.completed,
+                'isCancelled': booking.cancelled,
             })
     elif current_user.is_staff:
         for booking in all_bookings:
@@ -50,9 +50,12 @@ def filter_bookings(all_bookings, current_user, request):
                 'notes': booking.notes,
                 'hairdresser': booking.hairdresser.user.full_name,
                 'isHairDresser': is_hairdresser,
+                'isPending': booking.pending if is_hairdresser else None,
+                'isCompleted': booking.completed if is_hairdresser else None,
+                'isCancelled': booking.cancelled if is_hairdresser else None,
             })
     else:
-        for booking in all_bookings.filter(date__gte=date.today()):
+        for booking in all_bookings.filter(pending=True):
             is_owner = booking.user == request.user
             bookings_data.append({
                 'title': booking.service.name if is_owner else '',

@@ -1,21 +1,18 @@
 from django.contrib import messages
-from django.contrib.auth import mixins as auth_mixins, get_user_model
-
+from django.contrib.auth import get_user_model
+from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
-from django.contrib.auth import views as auth_views, login, logout
-from django.shortcuts import redirect
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
-from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserEditForm, \
-    HairSaloonUserPasswordChangeForm
+from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserPasswordChangeForm
 
 UserModel = get_user_model()
 

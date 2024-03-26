@@ -1,4 +1,4 @@
-from django.contrib.auth import models as auth_models, get_user_model
+from django.contrib.auth import models as auth_models
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _

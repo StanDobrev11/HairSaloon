@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.db import models
+
 from HairSaloon.services.models import Service
 
 UserModel = get_user_model()
