@@ -33,11 +33,18 @@ class BookingView(views.FormView):
     def get_context_data(self, **kwargs):
 
         context = super(BookingView, self).get_context_data(**kwargs)
-        bookings = self.all_bookings.order_by('date', 'start')
+        if self.request.user.is_superuser:
+            bookings = self.all_bookings.order_by('date', 'start')
+        elif self.request.user.is_staff:
+            bookings = self.all_bookings.order_by('date', 'start').filter(user=self.request.user)
+        else:
+            bookings = self.all_bookings.order_by('date', 'start').filter(user=self.request.user).exclude(
+                cancelled=True)
+
         context['bookings'] = bookings
         context['profile'] = Profile.objects.get(user=self.request.user)
-        context['upcoming_bookings'] = bookings.filter(date__gte=datetime.today(), user=self.request.user)
-        context['passed_bookings'] = bookings.filter(date__lt=datetime.today(), user=self.request.user)
+        context['upcoming_bookings'] = bookings.filter(date__gte=datetime.today())
+        context['passed_bookings'] = bookings.filter(date__lt=datetime.today())
         context['user_role'] = self.set_user_role()
 
         return context
@@ -53,7 +60,8 @@ class BookingView(views.FormView):
     def check_booking_conflicts(self, new_booking, existing_bookings, form):
         """ checks booking conflicts with existing bookings """
 
-        if existing_bookings.filter(date=new_booking.date, end__gte=new_booking.start, start__lte=new_booking.end).exists():
+        if existing_bookings.filter(date=new_booking.date, end__gte=new_booking.start,
+                                    start__lte=new_booking.end).exists():
             form.add_error(None, 'Date/Time already taken!')
             return False
 
@@ -118,10 +126,7 @@ class BookingDeleteView(views.DeleteView):
     def form_valid(self, form):
         booking = self.get_object()
 
-        if booking.pending:
-            booking.cancelled = True
-            booking.pending = False
-
+        booking.cancelled = True
         booking.save()
         messages.success(self.request, 'Booking cancelled')
         return HttpResponseRedirect('/dashboard/')
