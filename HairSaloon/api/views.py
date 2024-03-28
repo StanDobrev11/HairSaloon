@@ -1,6 +1,9 @@
 from datetime import date
 
+from django.db.models import Q
 from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 
 from HairSaloon.bookings.models import Booking
 from HairSaloon.services.models import Service
@@ -9,16 +12,21 @@ from HairSaloon.services.models import Service
 # Create your views here.
 
 def get_service_duration(request, pk):
-    service = Service.objects.get(pk=pk)
-    return JsonResponse({'duration': service.duration})
+
+    if request.user.is_authenticated:
+        service = Service.objects.get(pk=pk)
+        return JsonResponse({'duration': service.duration})
+
+    return redirect('index')
 
 
 def get_filtered_bookings(request):
-    # Optimize database queries
+    if request.user.is_anonymous:
+        return redirect('index')
+
     current_user = request.user
     bookings = Booking.objects.select_related('service', 'user', 'hairdresser__user').all()
 
-    # Initialize a common format function
     def format_booking(booking, include_title=True, include_cancelled=True, check_is_hairdresser=False,
                        check_is_owner=False):
         is_hairdresser = booking.hairdresser.user == request.user if check_is_hairdresser else False
@@ -42,7 +50,7 @@ def get_filtered_bookings(request):
     elif current_user.is_staff:
         # For staff, conditionally include title and cancelled status
         bookings_data = [format_booking(booking, check_is_hairdresser=True) for booking in bookings]
-    else:
+    elif current_user.is_authenticated:
         # For other users, filter by pending and conditionally include title
         bookings_data = [format_booking(booking, include_title=False, include_cancelled=False, check_is_owner=True) for
                          booking in bookings.filter(date__gte=date.today()).exclude(cancelled=True)]

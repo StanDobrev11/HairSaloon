@@ -1,11 +1,14 @@
 from datetime import timedelta, datetime, date
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic as views
 
+from HairSaloon.accounts.mixins import BasePermissionMixin, DetailViewPermissionMixin
 from HairSaloon.accounts.models import Profile
 from HairSaloon.bookings.forms import BookingForm
 from HairSaloon.bookings.models import Booking
@@ -14,7 +17,7 @@ from HairSaloon.bookings.models import Booking
 # Create your views here.
 
 
-class BookingView(views.FormView):
+class BookingView(LoginRequiredMixin, views.FormView):
     template_name = 'bookings/dashboard.html'
     form_class = BookingForm
     all_bookings = Booking.objects.select_related('service', 'user', 'hairdresser__user').all()
@@ -106,14 +109,19 @@ class BookingView(views.FormView):
         return self.render_to_response(self.get_context_data(form=self.form_class()))
 
 
-class BookingDetailView(views.DetailView):
+class BookingDetailView(DetailViewPermissionMixin, views.DetailView):
     template_name = 'bookings/booking_details.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        booking = self.get_object()
+        kwargs['booking_client'] = booking.user
+        return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         return Booking.objects.get(pk=self.kwargs['pk'])
 
 
-class BookingDeleteView(views.DeleteView):
+class BookingDeleteView(DetailViewPermissionMixin, views.DeleteView):
     """ the deletion of the booking should be indicated ONLY by the FALSE in the booking.canceled field """
     template_name = 'bookings/booking_delete.html'
 

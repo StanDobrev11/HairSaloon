@@ -37,7 +37,8 @@
                     <div id="bookings-list" style="display: none;">
                         {% if upcoming_bookings %}
                             {% for booking in upcoming_bookings %}
-                                <p><a href="{% url 'booking details' pk=booking.pk %}">{{ booking.date }} at {{ booking.start }}: {{ booking }} by {{ booking.hairdresser }}</a></p>
+                                <p><a href="{% url 'booking details' pk=booking.pk %}">{{ booking.date }}
+                                    at {{ booking.start }}: {{ booking }} by {{ booking.hairdresser }}</a></p>
                             {% endfor %}
                         {% else %}
                             <p>No bookings yet!</p>
@@ -97,12 +98,19 @@
                                 {{ error }}
                             {% endfor %}
                         </div>
-                    {% elif messages %}
-                        <div class="alert alert-danger">
-                            {% for msg in messages %}
-                                {{ msg }}
-                            {% endfor %}
-                        </div>
+                    {% endif %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <div class="alert alert-danger">
+                                    {{ message }}
+                                </div>
+                            {% elif message.tags == 'success' %}
+                                <div class="alert alert-success">
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                 </div>
             </div>

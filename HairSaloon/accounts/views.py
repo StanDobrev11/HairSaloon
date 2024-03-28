@@ -27,6 +27,11 @@ class LoginUserView(auth_views.LoginView):
     # this is needed to redirect the user out of the login page
     redirect_authenticated_user = True
 
+    def form_valid(self, form):
+        storage = messages.get_messages(self.request)
+        storage.used = True
+        return super().form_valid(form)
+
     def form_invalid(self, form):
         # this form handles error msgs upon passing invalid credentials and
         # can be used in the template as {{ messages }} tag
