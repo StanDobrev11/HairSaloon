@@ -107,7 +107,9 @@ class HairSalonDeleteUserView(LoginRequiredMixin, views.DeleteView):
     def form_valid(self, form):
         user = self.request.user
         user.is_active = False
-        messages.success(self.request, 'User deleted')
+        user.save()
+        logout(self.request)
+        # messages.success(self.request, 'User deleted')
         return HttpResponseRedirect(self.get_success_url())
 
 
