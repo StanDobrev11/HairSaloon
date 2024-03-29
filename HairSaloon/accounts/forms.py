@@ -11,26 +11,6 @@ class HairSaloonUserCreationForm(auth_forms.UserCreationForm):
         fields = ("email", "first_name", "last_name", "phone_number",)
 
 
-class HairSaloonUserDeleteForm(ModelForm):
-    def __init__(self):
-        super().__init__()
-        self.fields["email"].widget.attrs['readonly'] = True
-
-    class Meta:
-        model = UserModel
-        fields = ("email",)
-
-
-# class HairSaloonUserEditForm(auth_forms.UserChangeForm):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.fields["email"].widgets.attrs['readonly'] = True
-#
-#     class Meta:
-#         model = UserModel
-#         fields = ("email", "phone_number", "first_name", "last_name",)
-
-
 class HairSaloonUserPasswordChangeForm(auth_forms.PasswordChangeForm):
     class Meta:
         model = UserModel

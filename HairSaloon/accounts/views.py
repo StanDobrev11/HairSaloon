@@ -13,8 +13,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
-from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserPasswordChangeForm, \
-    HairSaloonUserDeleteForm
+from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserPasswordChangeForm
 
 UserModel = get_user_model()
 
@@ -70,6 +69,31 @@ class RegisterUserView(views.CreateView):
         valid = super().form_valid(form)
         login(self.request, self.object)
         return valid
+
+    def form_invalid(self, form):
+
+        reactivated = self.activate_soft_deleted_user(form)
+        if reactivated:
+            return redirect(self.get_success_url())
+
+        return super().form_invalid(form)
+
+    def activate_soft_deleted_user(self, form):
+        try:
+            user = UserModel.objects.get(email=form.data.get('email'), is_active=False)
+        except UserModel.DoesNotExist:
+            return False  # User does not exist or is not inactive
+
+        password = form.cleaned_data.get('password1')  # Or wherever the cleaned password comes from
+        user.set_password(password)  # Properly hash and set the new password
+        user.first_name = form.cleaned_data['first_name']
+        user.last_name = form.cleaned_data['last_name']
+        user.is_active = True
+        user.save()
+
+        login(self.request, user)
+
+        return True
 
 
 class HairSalonEditUserView(LoginRequiredMixin, views.UpdateView):
