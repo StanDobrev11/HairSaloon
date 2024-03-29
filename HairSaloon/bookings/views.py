@@ -122,8 +122,13 @@ class BookingDetailView(DetailViewPermissionMixin, views.DetailView):
 
 
 class BookingDeleteView(DetailViewPermissionMixin, views.DeleteView):
-    """ the deletion of the booking should be indicated ONLY by the FALSE in the booking.canceled field """
+    """ the deletion of the booking should be indicated ONLY by the FALSE in the booking.cancelled field """
     template_name = 'bookings/booking_delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        booking = self.get_object()
+        kwargs['booking_client'] = booking.user
+        return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         return Booking.objects.get(pk=self.kwargs['pk'])

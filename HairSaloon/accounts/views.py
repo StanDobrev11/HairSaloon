@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -72,6 +73,7 @@ class RegisterUserView(views.CreateView):
 
 class HairSalonEditUserView(LoginRequiredMixin, views.UpdateView):
     template_name = 'accounts/edit.html'
+
     queryset = UserModel.objects.select_related('hairdresser_profile', 'profile').all()
     fields = ['first_name', 'last_name', 'phone_number', ]
 

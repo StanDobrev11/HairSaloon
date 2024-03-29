@@ -10,10 +10,14 @@ class HairSaloonUserCreationForm(auth_forms.UserCreationForm):
         fields = ("email", "first_name", "last_name", "phone_number",)
 
 
-class HairSaloonUserEditForm(auth_forms.UserChangeForm):
-    class Meta:
-        model = UserModel
-        fields = ("phone_number", "first_name", "last_name",)
+# class HairSaloonUserEditForm(auth_forms.UserChangeForm):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields["email"].widgets.attrs['readonly'] = True
+#
+#     class Meta:
+#         model = UserModel
+#         fields = ("email", "phone_number", "first_name", "last_name",)
 
 
 class HairSaloonUserPasswordChangeForm(auth_forms.PasswordChangeForm):
@@ -22,5 +26,4 @@ class HairSaloonUserPasswordChangeForm(auth_forms.PasswordChangeForm):
         fields = ("old_password", "new_password1", "new_password2")
 
     def save(self, commit=True):
-
         return super().save()
