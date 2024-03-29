@@ -19,13 +19,19 @@
                 </h1>
             </div>
         </div>
-    
+
         <div class="pagearea">
             <h1 class="page-headline">EDIT PROFILE</h1>
             <i class="iconstartitle textmagenta fa fa-user"></i>
 
             <div class="edit-container">
                 <div class="edit-form-content">
+                    <h1 class="entry-title">Welcome, {{ user.full_name }}</h1><div class="edit-delete-btns">
+                        <a href="{% url 'delete user' pk=user.pk %}">
+                            <img class="bin-img" src="{% static 'img/icon-remove-22.jpg' %}" alt="bin button">
+                        </a>
+                    </div>
+
                     <form action="{% url 'edit user' pk=user.pk %}" method="post">
                         <p> User email (cannot be changed): {{ user.email }} </p>
                         {{ form.as_p }}

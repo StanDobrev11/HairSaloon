@@ -1,5 +1,6 @@
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import get_user_model
+from django.forms import ModelForm
 
 UserModel = get_user_model()
 
@@ -8,6 +9,16 @@ class HairSaloonUserCreationForm(auth_forms.UserCreationForm):
     class Meta:
         model = UserModel
         fields = ("email", "first_name", "last_name", "phone_number",)
+
+
+class HairSaloonUserDeleteForm(ModelForm):
+    def __init__(self):
+        super().__init__()
+        self.fields["email"].widget.attrs['readonly'] = True
+
+    class Meta:
+        model = UserModel
+        fields = ("email",)
 
 
 # class HairSaloonUserEditForm(auth_forms.UserChangeForm):

@@ -13,7 +13,8 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
-from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserPasswordChangeForm
+from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserPasswordChangeForm, \
+    HairSaloonUserDeleteForm
 
 UserModel = get_user_model()
 
@@ -93,6 +94,21 @@ class HairSalonPasswordChangeView(PasswordChangeView):
         form = super().form_valid(form)
         messages.success(self.request, 'Your password has been updated!')
         return form
+
+
+class HairSalonDeleteUserView(LoginRequiredMixin, views.DeleteView):
+    template_name = 'accounts/delete_user.html'
+    queryset = UserModel.objects.select_related('hairdresser_profile', 'profile').all()
+    success_url = reverse_lazy('index')
+
+    def get_object(self, queryset=queryset):
+        return queryset.get(pk=self.request.user.pk)
+
+    def form_valid(self, form):
+        user = self.request.user
+        user.is_active = False
+        messages.success(self.request, 'User deleted')
+        return HttpResponseRedirect(self.get_success_url())
 
 
 def logout_view(request):

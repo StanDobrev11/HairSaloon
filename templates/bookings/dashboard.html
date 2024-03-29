@@ -25,7 +25,7 @@
                         <a href="{% url 'edit user' pk=user.pk %}">
                             <img class="edit-img" src="{% static 'img/edit-pen-icon-6.jpg' %}" alt="edit button">
                         </a>
-                        <a href="#">
+                        <a href="{% url 'delete user' pk=user.pk %}">
                             <img class="bin-img" src="{% static 'img/icon-remove-22.jpg' %}" alt="bin button">
                         </a>
                     </div>

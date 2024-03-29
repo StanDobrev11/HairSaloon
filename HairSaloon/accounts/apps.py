@@ -6,4 +6,4 @@ class AccountsConfig(AppConfig):
     name = 'HairSaloon.accounts'
 
     def ready(self) -> None:
-        pass
+        from . import signals

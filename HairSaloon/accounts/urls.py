@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from HairSaloon.accounts.views import LoginUserView, RegisterUserView, logout_view, HairSalonEditUserView, \
-    HairSalonPasswordChangeView
+    HairSalonPasswordChangeView, HairSalonDeleteUserView
 
 urlpatterns = [
     path('login/', LoginUserView.as_view(), name='login'),
@@ -12,6 +12,7 @@ urlpatterns = [
         'profile/<int:pk>/',
         include([
             path('', HairSalonEditUserView.as_view(), name='edit user'),
+            path('delete/', HairSalonDeleteUserView.as_view(), name='delete user'),
             path('passchange/', HairSalonPasswordChangeView.as_view(), name='password change')
         ])
     )
