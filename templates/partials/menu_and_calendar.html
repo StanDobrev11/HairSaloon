@@ -15,10 +15,13 @@
             <li><a href="{% url 'index' %}">Home</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'dashboard' %}">My Bookings</a></li>
-                <li><a href="#">Book an Apointment</a></li>
+
                 <li><a href="{% url 'edit user' pk=user.pk %}">Profile</a></li>
                 <li><a href="{% url 'logout' %}">Log out</a></li>
-                
+                {% if user.is_staff %}
+                    <li><a href="{% url 'list_services' %}">Services</a></li>
+                {% endif %}
+
             {% else %}
                 <li><a href="{% url 'login' %}">Log in</a></li>
                 <li><a href="{% url 'register' %}">Register</a>

@@ -24,8 +24,6 @@ class Service(models.Model):
     haircut_url = models.URLField(max_length=1024, blank=True, null=True)
     haircut_photo = models.ImageField(upload_to='haircut_images/', blank=True, null=True)
 
-    # procedures = models.ManyToManyField(to='Procedure', related_name='services')
-
     def __str__(self):
         return self.name
 
@@ -44,24 +42,3 @@ class Service(models.Model):
     def save(self, *args, **kwargs):
         self.download_and_save_image()
         super().save(*args, **kwargs)
-
-#
-# class Procedure(models.Model):
-#     PROCEDURE_CHOICES = (
-#         ('cut', 'cut'),
-#         ('wash', 'wash'),
-#         ('dry', 'dry'),
-#         ('coloring', 'coloring'),
-#         ('treatment', 'treatment'),
-#         ('styling', 'styling'),
-#         ('official style', 'official style'),
-#     )
-#
-#     name = models.CharField(
-#         max_length=30,
-#         unique=True,
-#         choices=PROCEDURE_CHOICES
-#     )
-#
-#     def __str__(self):
-#         return self.name
