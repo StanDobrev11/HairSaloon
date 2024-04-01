@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
 from HairSaloon.hairdressers.models import HairDresser
@@ -22,15 +22,11 @@ class DetailServiceView(views.DetailView):
         return queryset.get(pk=self.kwargs['pk'])
 
 
-class CreateServiceView(StaffRequiredMixin, views.CreateView):
+class CreateServiceView(AdminRequiredMixin, views.CreateView):
     """
-    The view is accessible for staff and admin users and inherits StaffRequiredMixin
+    The view is accessible for admin users and inherits AdminRequiredMixin
 
-    If the user creating the service is a hairdresser, then the service will be auto associated with
-    the user
-
-    If the user is admin, then will be redirected to page to associate the service to hairdressers
-
+    The admin is responsible for creating/adding new service and assigning it to hairdressers
     """
 
     template_name = 'services/create_service.html'
@@ -38,17 +34,10 @@ class CreateServiceView(StaffRequiredMixin, views.CreateView):
     success_url = 'list_services'
 
     def form_valid(self, form):
-
-        try:
-            hairdresser = HairDresser.objects.get(pk=self.request.user.hairdresser_profile.pk)
-        except HairDresser.DoesNotExist:
-            return self.form_invalid(form)
+        hairdressers = form.cleaned_data['select_hairdressers']
 
         form = form.save(commit=True)
-
-        if self.request.user.is_superuser:
-            self.success_url = 'assign_hairdresser'
-        else:
+        for hairdresser in hairdressers:
             hairdresser.services.add(form)
 
         return redirect(self.success_url)
@@ -56,25 +45,6 @@ class CreateServiceView(StaffRequiredMixin, views.CreateView):
     def get_success_url(self):
         messages.success(self.request, messages.SUCCESS, 'Service created successfully!')
         return reverse_lazy(self.success_url)
-
-
-class ServiceToHairdresserAssociationView(AdminRequiredMixin, views.CreateView):
-    """
-    The view is accessible for admin users ONLY and inherits StaffRequiredMixin
-
-    Provides options to assign hairdresser to the newly created service.
-
-    The admin has the option to assign the service to one or more hairdressers.
-    """
-
-    template_name = 'services/hairdresser_to_service.html'
-    queryset = UserModel.hairdresser_profile
-    fields = "__all__"
-
-
-def get_success_url(self):
-    messages.success(self.request, messages.SUCCESS, 'Service assigned successfully!')
-    return reverse_lazy('list_services')
 
 
 class ListServiceView(StaffRequiredMixin, views.ListView):

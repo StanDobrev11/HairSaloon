@@ -30,11 +30,8 @@
                         {{ form.as_p }}
 
                         {% csrf_token %}
-                        {% if user.is_superuser %}
-                            <button type="submit" class="btn login-btn">Assign Hairdressers</button>
-                        {% elif user.is_staff %}
-                            <button type="submit" class="btn login-btn">Create</button>
-                        {% endif %}
+
+                        <button type="submit" class="btn login-btn">Create</button>
                     </form>
                 </div>
             </div>

@@ -35,7 +35,7 @@ class HairDresser(models.Model):
     # Provides link to services available and handled by the hairdresser
     services = models.ManyToManyField(
         to=Service,
-        related_name='hairdressers'
+        related_name='hairdressers',
     )
 
     # Allows the creation of a HairDresser without associated user
