@@ -26,6 +26,7 @@ class LoginUserView(auth_views.LoginView):
     redirect_authenticated_user = True
 
     def form_valid(self, form):
+        # attempting to clear the messages
         storage = messages.get_messages(self.request)
         storage.used = True
         return super().form_valid(form)
