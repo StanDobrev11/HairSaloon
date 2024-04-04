@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <body style="background-image:url('{% static 'img/bg5.jpg' %}');background-attachment:fixed;background-size:cover;">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% include 'partials/menu_and_calendar.html' %}
+    <div class="container">
+
+        <div class="logoarea">
+            <div class="intro">
+                <h1><span class="smaller wow zoomIn" data-wow-duration="2s" data-wow-delay="0.5">1044 Madison Avenue, New York, NY 10075, US</span>
+                    <span class="big wow pulse" data-wow-duration="1s" data-wow-delay="0s">Beauttio</span>
+                    <span class="small wow fadeIn" data-wow-duration="2s" data-wow-delay="0.5s">- HAIR SALON -</span>
+                </h1>
+            </div>
+        </div>
+
+        <div class="pagearea">
+            <h1 class="page-headline">DELETE SERVICE</h1>
+            <i class="iconstartitle textmagenta fa fa-star"></i>
+
+            <div class="bookings-container">
+                <div class="title-and-buttons">
+                    <div class="booking-detail-container">
+                        <form action="{% url 'delete service' pk=service.pk %}" method="post">
+                            {% csrf_token %}
+                            <h1 class="booking-title">{{ booking }}</h1>
+                            <p>Are you sure you want to delete the {{ object }}?</p>
+                            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                            <a href="{% url 'detail service' pk=service.pk %}" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        {% include 'partials/footer.html' %}
+        {% include 'partials/script_other_page.html' %}
+        {% include 'partials/script_calendar.html' %}
+        <script src="{% static 'js/end_time_dynamic_display.js' %}"></script>
+        <script src="{% static 'js/calendar.js' %}"></script>
+        <script src="{% static 'js/toggle_button_collapse.js' %}"></script>
+    </body>
+
+{% endblock %}
