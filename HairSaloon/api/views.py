@@ -1,9 +1,7 @@
 from datetime import date
 
-from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
 
 from HairSaloon.bookings.models import Booking
 from HairSaloon.services.models import Service
@@ -12,7 +10,6 @@ from HairSaloon.services.models import Service
 # Create your views here.
 
 def get_service_duration(request, pk):
-
     if request.user.is_authenticated:
         service = Service.objects.get(pk=pk)
         return JsonResponse({'duration': service.duration})

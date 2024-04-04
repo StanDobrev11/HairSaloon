@@ -1,4 +1,3 @@
-
 # TODO trigger that notifies user and hairdresser for creation of the booking
 # TODO trigger that notifies user and hairdresser for alteration of the booking
 from django.db.models.signals import pre_delete

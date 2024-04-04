@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -17,8 +16,6 @@ from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUser
 
 UserModel = get_user_model()
 
-
-# Create your views here.
 
 class LoginUserView(auth_views.LoginView):
     # this view requires template and 'next' to be used
@@ -41,6 +38,11 @@ class LoginUserView(auth_views.LoginView):
 
 
 class RegisterUserView(views.CreateView):
+    """
+    Newly created user will be handled by this view.
+
+    If user is already registered, the dispatch method will handle the redirection of authenticated users.
+    """
     # important here is to use form which is created by the user in forms.py
     form_class = HairSaloonUserCreationForm
     template_name = 'accounts/register.html'
@@ -63,15 +65,24 @@ class RegisterUserView(views.CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('index')
+        return reverse_lazy(self.success_url)
 
     def form_valid(self, form):
+        """
+        All new user with never-existing-in-DB email is handled through form_valid(),
+        after validation, the user is logged in automatically"""
         valid = super().form_valid(form)
         login(self.request, self.object)
         return valid
 
     def form_invalid(self, form):
-
+        """
+        if user is soft-deleted, they are no longer active, i.e. is_active = False, however, their details are still
+        in the DB.
+        The email will throw UNIQUE error, hence we need to bypass the email validator. This is done in the
+        activate_soft_deleted_user()
+        If the user is reactivated, this will redirect to success url and will not continue with form_invalid() method
+        """
         reactivated = self.activate_soft_deleted_user(form)
         if reactivated:
             return redirect(self.get_success_url())
@@ -121,6 +132,10 @@ class HairSalonPasswordChangeView(PasswordChangeView):
 
 
 class HairSalonDeleteUserView(LoginRequiredMixin, views.DeleteView):
+    """
+    The method does not actually delete the user but instead sets the is_active attribute to 'False'
+    hence preventing the user from logging in.
+    """
     template_name = 'accounts/delete_user.html'
     queryset = UserModel.objects.select_related('hairdresser_profile', 'profile').all()
     success_url = reverse_lazy('index')

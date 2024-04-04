@@ -4,9 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
 
-from HairSaloon.hairdressers.models import HairDresser
 from HairSaloon.services.forms import CreateServiceForm
-from HairSaloon.services.mixins import StaffRequiredMixin, AdminRequiredMixin, FormValidMixin
+from HairSaloon.services.mixins import StaffRequiredMixin, AdminRequiredMixin
 from HairSaloon.services.models import Service
 
 UserModel = get_user_model()

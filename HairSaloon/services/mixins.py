@@ -25,6 +25,7 @@ class FormValidMixin:
         hairdressers = form.cleaned_data['select_hairdressers']
 
         form = form.save(commit=True)
+        form.hairdressers.clear()  # this clears the service association to hairdressers
         for hairdresser in hairdressers:
             hairdresser.services.add(form)
 

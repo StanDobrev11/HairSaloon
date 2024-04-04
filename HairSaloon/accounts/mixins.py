@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth import mixins as auth_mixins
-from django.core import exceptions as ex
 from django.shortcuts import redirect
 
 

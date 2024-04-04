@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -22,7 +21,8 @@ class Migration(migrations.Migration):
                 ('background', models.TextField(max_length=500)),
                 ('working_since', models.DateField(blank=True, null=True)),
                 ('services', models.ManyToManyField(related_name='hairdressers', to='services.service')),
-                ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='hairdresser_profile', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='hairdresser_profile', to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -16,7 +15,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100, unique=True)),
-                ('male_female_child', models.CharField(choices=[('male', 'male'), ('female', 'female'), ('child', 'child')], max_length=6)),
+                ('male_female_child',
+                 models.CharField(choices=[('male', 'male'), ('female', 'female'), ('child', 'child')], max_length=6)),
                 ('description', models.TextField()),
                 ('duration', models.IntegerField(help_text='Duration in minutes')),
                 ('price', models.DecimalField(decimal_places=2, max_digits=6)),

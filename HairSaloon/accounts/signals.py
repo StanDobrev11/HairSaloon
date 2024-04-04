@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from HairSaloon.accounts.models import Profile
@@ -31,4 +31,3 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
             HairDresser.objects.get(user=instance).delete()
         except HairDresser.DoesNotExist:
             pass
-

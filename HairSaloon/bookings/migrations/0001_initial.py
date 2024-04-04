@@ -9,7 +9,6 @@ import HairSaloon.bookings.validators
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -24,18 +23,24 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date', models.DateField()),
-                ('start', models.TimeField(validators=[HairSaloon.bookings.validators.open_hour_validator, HairSaloon.bookings.validators.close_hour_validator])),
+                ('start', models.TimeField(validators=[HairSaloon.bookings.validators.open_hour_validator,
+                                                       HairSaloon.bookings.validators.close_hour_validator])),
                 ('end', models.TimeField(blank=True, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('notes', models.TextField(blank=True, null=True)),
                 ('user_notified', models.BooleanField(default=False)),
                 ('hairdresser_notified', models.BooleanField(default=False)),
-                ('pre_photo', models.ImageField(blank=True, upload_to=HairSaloon.bookings.models.bookings_directory_path)),
-                ('post_photo', models.ImageField(blank=True, upload_to=HairSaloon.bookings.models.bookings_directory_path)),
-                ('hairdresser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings', to='hairdressers.hairdresser')),
-                ('service', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings', to='services.service')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings', to=settings.AUTH_USER_MODEL)),
+                ('pre_photo',
+                 models.ImageField(blank=True, upload_to=HairSaloon.bookings.models.bookings_directory_path)),
+                ('post_photo',
+                 models.ImageField(blank=True, upload_to=HairSaloon.bookings.models.bookings_directory_path)),
+                ('hairdresser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings',
+                                                  to='hairdressers.hairdresser')),
+                ('service', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings',
+                                              to='services.service')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings',
+                                           to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ['-date', '-start'],

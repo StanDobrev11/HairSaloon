@@ -2,13 +2,12 @@ from datetime import timedelta, datetime, date
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic as views
 
-from HairSaloon.accounts.mixins import BasePermissionMixin, DetailViewPermissionMixin
+from HairSaloon.accounts.mixins import DetailViewPermissionMixin
 from HairSaloon.accounts.models import Profile
 from HairSaloon.bookings.forms import BookingForm
 from HairSaloon.bookings.models import Booking
