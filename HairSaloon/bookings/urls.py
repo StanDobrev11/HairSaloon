@@ -9,6 +9,7 @@ urlpatterns = [
         include([
             path('deltails/', BookingDetailView.as_view(), name='booking details'),
             path('delete/', BookingDeleteView.as_view(), name='booking delete'),
+
         ])
     )
 ]

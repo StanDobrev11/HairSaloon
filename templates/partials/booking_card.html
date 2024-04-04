@@ -8,6 +8,6 @@
         <p>Notes: {{ booking.notes }}</p>
     {% endif %}
 
-    <a href="#" class="btn btn-primary">Reschedule</a> or
-    <a href="{% url 'booking delete' pk=booking.pk %}" class="btn btn-danger">Cancel</a>
+    <a href="{% url 'booking delete' pk=booking.pk %}" class="btn btn-danger">Cancel Booking</a>
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
 </div>

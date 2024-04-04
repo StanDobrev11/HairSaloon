@@ -142,3 +142,4 @@ class BookingDeleteView(DetailViewPermissionMixin, views.DeleteView):
         booking.save()
         messages.success(self.request, 'Booking cancelled')
         return HttpResponseRedirect('/dashboard/')
+

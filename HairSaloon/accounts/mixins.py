@@ -11,21 +11,6 @@ class BasePermissionMixin(auth_mixins.AccessMixin):
             messages.error(request, 'Login first to view the page')
             return self.handle_no_permission()
 
-        # if not request.user.is_active:
-        #     return self.handle_no_permission()
-        #
-        # # Check for admin access
-        # if hasattr(self, 'admin_required') and self.admin_required:
-        #     if not request.user.is_superuser:
-        #         return self.handle_no_permission()
-        #
-        # # Check for staff access
-        # if hasattr(self, 'staff_required') and self.staff_required:
-        #     if not request.user.is_staff:
-        #         return self.handle_no_permission()
-        #
-        # if messages:
-        #     list(messages.get_messages(request))
         return super().dispatch(request, *args, **kwargs)
 
 
