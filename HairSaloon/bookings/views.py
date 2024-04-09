@@ -1,7 +1,7 @@
 from datetime import timedelta, datetime, date
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import mixins as auth_mixins
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -16,7 +16,7 @@ from HairSaloon.bookings.models import Booking
 # Create your views here.
 
 
-class BookingView(LoginRequiredMixin, views.FormView):
+class BookingView(auth_mixins.LoginRequiredMixin, views.FormView):
     template_name = 'bookings/dashboard.html'
     form_class = BookingForm
     all_bookings = Booking.objects.select_related('service', 'user', 'hairdresser__user').all()
@@ -142,4 +142,3 @@ class BookingDeleteView(DetailViewPermissionMixin, views.DeleteView):
         booking.save()
         messages.success(self.request, 'Booking cancelled')
         return HttpResponseRedirect('/dashboard/')
-
