@@ -8,9 +8,11 @@ class IndexView(views.TemplateView):
     template_name = 'common/index.html'
 
 
-class BlogView(views.TemplateView):
+class BlogView(views.ListView):
     template_name = 'common/blog.html'
 
+    def get_object(self, queryset=None):
+        pass
 
 class AboutView(views.ListView):
     template_name = 'common/about.html'
