@@ -1,12 +1,18 @@
-# TODO trigger that notifies user and hairdresser for creation of the booking
-# TODO trigger that notifies user and hairdresser for alteration of the booking
-from django.db.models.signals import pre_delete
+from django.core.mail import send_mail
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from HairSaloon.bookings.models import Booking
 
 
-@receiver(pre_delete, sender=Booking)
-def delete_booking(sender, instance, **kwargs):
-    """ the signal triggers notification for the cancellation of the user and the hairdresser"""
-    # TODO trigger that notifies user and hairdresser for the cancellation of the booking
+@receiver(post_save, sender=Booking)
+def create_booking(sender, instance, created, **kwargs):
+    if created:
+        email = instance.user.email
+        send_mail(
+            'Booking created',
+            'Booking created successfully',
+            'hair@saloon.com',
+            [f"{email}"],
+            fail_silently=False,
+        )
