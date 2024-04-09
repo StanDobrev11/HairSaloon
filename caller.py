@@ -1,4 +1,3 @@
-import datetime
 import os
 
 import django
@@ -7,8 +6,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "HairSaloon.settings")
 django.setup()
 
 from HairSaloon.services.models import Service
-from HairSaloon.bookings.models import Booking
-from HairSaloon.hairdressers.models import HairDresser
 
 Service.objects.create(
     name='Tousled Lob Haircut',
