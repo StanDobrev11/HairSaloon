@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'celery',
+
     'HairSaloon.common.apps.CommonConfig',
     'HairSaloon.accounts.apps.AccountsConfig',
     'HairSaloon.bookings.apps.BookingsConfig',
@@ -141,6 +143,16 @@ MEDIA_URL = '/media/'
 
 DATE_FORMAT = 'd.m.Y'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mailhog'
+EMAIL_PORT = 1025
+# EMAIL_USE_TLS = False
+
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+
+
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,
@@ -163,7 +175,3 @@ DATE_FORMAT = 'd.m.Y'
 #         },
 #     },
 # }
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
