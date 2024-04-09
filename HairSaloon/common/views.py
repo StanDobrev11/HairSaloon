@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import mixins as auth_mixins
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
 
@@ -46,7 +47,16 @@ class AddCommentView(auth_mixins.LoginRequiredMixin, views.CreateView):
         user = UserModel.objects.get(pk=self.request.user.pk)
         form.user = user
         form.save()
+        messages.success(self.request, 'Your comment was created successfully! Awaiting approval.')
         return redirect(self.success_url)
+
+
+class ApproveCommentView(AdminRequiredMixin, views.View):
+    def post(self, request, *args, **kwargs):
+        comment = get_object_or_404(Comment, pk=self.kwargs['pk'])
+        comment.is_approved = True
+        comment.save()
+        return redirect(reverse_lazy('blog'))
 
 
 class DeleteCommentView(AdminRequiredMixin, views.DeleteView):

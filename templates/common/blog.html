@@ -30,16 +30,27 @@
                     {% include 'partials/comment_card.html' %}
                     {% if user.is_superuser %}
                         {% if not obj.is_approved %}
-                            <a href="#" class="btn btn-danger">Approve comment</a>
+                            <form action="{% url 'approve comment' pk=obj.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Approve comment</button>
+                            </form>
                         {% endif %}
                         <a href="{% url 'delete comment' pk=obj.pk %}" class="btn btn-danger">Delete comment</a>
 
+{#                    {% elif obj.user == user %}#}
+{#                        <a href="#" class="btn btn-danger">Edit comment</a>#}
+{##}
                     {% endif %}
                 {% endfor %}
             {% else %}
                 <p>No comments yet!</p>
             {% endif %}
 
+            {% if messages %}
+                {% for msg in messages %}
+                    {{ msg }}
+                {% endfor %}
+            {% endif %}
 
         </div>
     </div>

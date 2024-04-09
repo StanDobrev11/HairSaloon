@@ -1,7 +1,8 @@
 from django.urls import path, include
 from django.views.generic import DetailView
 
-from HairSaloon.common.views import IndexView, ListBlogView, AboutView, AddCommentView, DeleteCommentView
+from HairSaloon.common.views import IndexView, ListBlogView, AboutView, AddCommentView, DeleteCommentView, \
+    ApproveCommentView
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
@@ -12,7 +13,8 @@ urlpatterns = [
         include([
             path('', ListBlogView.as_view(), name='blog'),
             path('add/', AddCommentView.as_view(), name='add comment'),
-            path('<int:pk>/', DeleteCommentView.as_view(), name='delete comment'),
+            path('<int:pk>/delete/', DeleteCommentView.as_view(), name='delete comment'),
+            path('<int:pk>/approve/', ApproveCommentView.as_view(), name='approve comment'),
         ])
     )
 ]
