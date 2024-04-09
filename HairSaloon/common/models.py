@@ -19,7 +19,7 @@ class Comment(models.Model):
         ]
     )
 
-    text = models.TextField(
+    content = models.TextField(
         max_length=TEXT_MAX_LENGTH,
         validators=[MinLengthValidator(TEXT_MIN_LENGTH)]
     )
@@ -27,6 +27,7 @@ class Comment(models.Model):
     is_approved = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     user = models.ForeignKey(
         to=UserModel,
