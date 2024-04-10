@@ -53,10 +53,9 @@ the data, are not accessible to unauthorised users.
 
 - bookings -> this is the core of the WebApp, the place where all of above converge. The created clien has access to calendar view, rendered by JS
 code with API data. The calendar provides overall information of the available dates/times to make a booking. The form for creating booking is
-not generated on separate view but is generated on the same template using JS. When a date/time cell is selected, the start time is set in the form,
-when a service is selected, the end time is autocompleted using JS. Validation of the form is bss available hairdresser, who can perform the
-haircut. However, the present code does not account for multiple hairdressers thus rendering impossible to make multiple appointments for the same
-date/time but for different hairdressers.
+not generated on separate view but is generated on the same template. When a date/time cell is selected, the start time is set in the form,
+
+
 The option for cancelling booking lyies in the hands of the client. The option for cancelling should be made available to the hairdresser as well
 as to the admin in case of force-majeure circumstances. The cancellation of a booking is actually done by altering the bool field cancelled to True.
 This will ensure that the hairdresser will be able to view all cancellations beforehand on their calendar.
