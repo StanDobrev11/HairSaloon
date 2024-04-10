@@ -36,7 +36,7 @@ class BookingView(auth_mixins.LoginRequiredMixin, views.FormView):
 
         context = super(BookingView, self).get_context_data(**kwargs)
         if self.request.user.is_superuser:
-            bookings = self.all_bookings.order_by('date', 'start')
+            bookings = self.all_bookings.order_by('date', 'start').filter(cancelled=False)
         elif self.request.user.is_staff:
             bookings = self.all_bookings.order_by('date', 'start').filter(hairdresser=self.request.user.hairdresser_profile)
         else:

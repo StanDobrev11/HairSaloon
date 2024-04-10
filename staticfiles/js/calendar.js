@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Filter and process bookings based on user role
                         const events = bookings.reduce((acc, booking) => {
                             // Logic for superuser: Include all except cancelled bookings
-                            if (userRole === 'superuser' && !booking.isCancelled) {
+                            if (userRole === 'admin' && !booking.isCancelled) {
                                 acc.push({
                                     title: booking.title,
                                     start: booking.start,
