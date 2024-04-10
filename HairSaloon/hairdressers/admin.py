@@ -7,6 +7,8 @@ from HairSaloon.hairdressers.models import HairDresser
 @admin.register(HairDresser)
 class HairDresserAdmin(admin.ModelAdmin):
     list_display = ('display_full_name', 'working_since')
+    list_filter = ('services',)
+    search_fields = ('user__email',)
 
     def display_full_name(self, obj):
         # Check if the hairdresser has an associated user and return the user's full name
