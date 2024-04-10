@@ -14,7 +14,8 @@
         <p><strong>For:</strong> {{ service.get_male_female_child_display }}</p>
         <p><strong>Duration:</strong> {{ service.duration }} minutes</p>
         <p><strong>Price:</strong> ${{ service.price }}</p>
-
+        
+        {% if user.is_superuser %}
         <div class="service-card-actions">
             <div class="edit-delete-btns">
 
@@ -31,6 +32,7 @@
                 </a>
             </div>
         </div>
+        {% endif %}
 
 
     </div>

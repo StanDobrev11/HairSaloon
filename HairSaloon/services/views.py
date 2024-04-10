@@ -48,7 +48,7 @@ class CreateServiceView(AdminRequiredMixin, views.CreateView):
         return reverse_lazy(self.success_url)
 
 
-class ListServiceView(StaffRequiredMixin, views.ListView):
+class ListServiceView(views.ListView):
     """The view is accessible for staff and admin users and inherits StaffRequiredMixin"""
 
     template_name = 'services/list_services.html'

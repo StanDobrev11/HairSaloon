@@ -28,14 +28,16 @@
                     {% if object_list %}
                         {% for service in object_list %}
                             <li>
-                                <a href="{% url 'detail service' pk=service.pk %}">{{ service }}</a>
+                                <a href="{% url 'detail service' pk=service.pk %}">{{ service }}, price: ${{ service.price }}, approx: {{ service.duration }} minutes</a>
                             </li>
                         {% endfor %}
                     {% endif %}
                 </ul>
 
             </div>
-            <a href="{% url 'create_service' %}">Add a service?</a>
+            {% if user.is_superuser %}
+                <a href="{% url 'create_service' %}">Add a service?</a>
+            {% endif %}
         </div>
 
     </div>
