@@ -79,6 +79,7 @@
 
                         <div id="user-role" data-role="{{ user_role }}" style="display:none;"></div>
                         <form action="{% url 'dashboard' %}" method="post">
+                            
                             <p>Select your Stylist: {{ form.hairdresser }}</p>
                             <p>Select a Service: {{ form.service }}</p>
                             <!-- Django renders the actual select element -->

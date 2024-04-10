@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
     var userElement = document.getElementById('user-role')
     var userRole = userElement.getAttribute('data-role');
-    console.log(userRole);
+    var hairdresserSelect = document.getElementById('id_hairdresser');
+    console.log(hairdresserSelect);
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
             selectable: true,
@@ -54,37 +55,52 @@ document.addEventListener('DOMContentLoaded', function () {
                         return response.json();
                     })
                     .then(function (bookings) {
-                        const events = bookings.filter(booking => {
-                            const excludeBooking = userRole === 'staff' && !booking.isHairDresser && booking.isCancelled;
-                            // console.log(`Booking: ${booking.title}, Exclude: ${excludeBooking}`);
-                            return !excludeBooking;
-                        }).map(booking => {
-                            let backgroundColor = 'red'; // Default color for others
-                            let bookingTitle = booking.title;
-                            let textColor = 'white'; // Default text color
+                        // Filter and process bookings based on user role
+                        const events = bookings.reduce((acc, booking) => {
+                            // Logic for superuser: Include all except cancelled bookings
+                            if (userRole === 'superuser' && !booking.isCancelled) {
+                                acc.push({
+                                    title: booking.title,
+                                    start: booking.start,
+                                    end: booking.end,
+                                    backgroundColor: 'blue',
+                                    textColor: 'white',
+                                });
+                            }
 
-                            if (userRole === 'superuser') {
-                                backgroundColor = 'blue';
-                            } else if (userRole === 'client' && booking.isOwner) {
-                                backgroundColor = 'green';
-                            } else if (userRole === 'staff' && booking.isHairDresser) {
-                                backgroundColor = 'green';
+                            // Logic for staff: Include all own bookings, including cancelled
+                            if (userRole === 'staff' && booking.isHairDresser) {
+                                let backgroundColor = 'green';
+                                let textColor = 'white';
                                 if (booking.isCancelled) {
-                                    bookingTitle += ' Cancelled';
-                                    textColor = 'black';
                                     backgroundColor = 'orange';
+                                    textColor = 'black';
+                                }
+                                acc.push({
+                                    title: booking.title,
+                                    start: booking.start,
+                                    end: booking.end,
+                                    backgroundColor: backgroundColor,
+                                    textColor: textColor,
+                                });
+                            }
+
+                            // Logic for clients: Display own booking regardless of the hairdresser and
+                            // selected hairdresser's bookings if selected for a new booking
+                            if (userRole === 'client') {
+                                if (booking.isOwner || (hairdresserSelect && hairdresserSelect.value === booking.hairdresserId)) {
+                                    acc.push({
+                                        title: booking.title,
+                                        start: booking.start,
+                                        end: booking.end,
+                                        backgroundColor: 'green',
+                                        textColor: 'white',
+                                    });
                                 }
                             }
-                            // Since bookings that meet the exclusion condition are already filtered out,
-                            // we don't need an else case for it here.
-                            return {
-                                title: bookingTitle,
-                                start: booking.start,
-                                end: booking.end,
-                                backgroundColor: backgroundColor,
-                                textColor: textColor,
-                            };
-                        });
+
+                            return acc;
+                        }, []);
 
                         successCallback(events);
                     })
@@ -93,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         failureCallback(error);
                     });
             },
+
 
             // this function regulates the size of the booking square
             eventDidMount: function (info) {
