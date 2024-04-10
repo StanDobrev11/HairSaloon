@@ -35,8 +35,6 @@ class Booking(models.Model):
     initial_hairdresser_notified = models.BooleanField(default=False)
     cancelled_user_notified = models.BooleanField(default=False)
     cancelled_hairdresser_notified = models.BooleanField(default=False)
-    alter_user_notified = models.BooleanField(default=False)
-    alter_hairdresser_notified = models.BooleanField(default=False)
 
     # photos
     pre_photo = models.ImageField(
