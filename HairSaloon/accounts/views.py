@@ -66,7 +66,7 @@ class RegisterUserView(views.CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy(self.success_url)
+        return self.success_url
 
     def form_valid(self, form):
         """
@@ -96,8 +96,8 @@ class RegisterUserView(views.CreateView):
         except UserModel.DoesNotExist:
             return False  # User does not exist or is not inactive
 
-        password = form.cleaned_data.get('password1')  # Or wherever the cleaned password comes from
-        user.set_password(password)  # Properly hash and set the new password
+        password = form.cleaned_data.get('password1')
+        user.set_password(password)
         user.first_name = form.cleaned_data['first_name']
         user.last_name = form.cleaned_data['last_name']
         user.is_active = True

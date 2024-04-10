@@ -52,6 +52,7 @@ class HairSaloonUserManager(BaseUserManager):
             )
         else:
             backend = auth.load_backend(backend)
+
         if hasattr(backend, "with_perm"):
             return backend.with_perm(
                 perm,
