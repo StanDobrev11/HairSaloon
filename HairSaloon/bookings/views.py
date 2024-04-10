@@ -38,7 +38,7 @@ class BookingView(auth_mixins.LoginRequiredMixin, views.FormView):
         if self.request.user.is_superuser:
             bookings = self.all_bookings.order_by('date', 'start')
         elif self.request.user.is_staff:
-            bookings = self.all_bookings.order_by('date', 'start').filter(user=self.request.user)
+            bookings = self.all_bookings.order_by('date', 'start').filter(hairdresser=self.request.user.hairdresser_profile)
         else:
             bookings = self.all_bookings.order_by('date', 'start').filter(user=self.request.user).exclude(
                 cancelled=True)
@@ -62,8 +62,14 @@ class BookingView(auth_mixins.LoginRequiredMixin, views.FormView):
     def check_booking_conflicts(self, new_booking, existing_bookings, form):
         """ checks booking conflicts with existing bookings """
 
-        if existing_bookings.filter(date=new_booking.date, end__gte=new_booking.start,
-                                    start__lte=new_booking.end).exists():
+        new_booking_hairdresser = new_booking.hairdresser
+
+        if existing_bookings.filter(
+                date=new_booking.date,
+                end__gte=new_booking.start,
+                start__lte=new_booking.end,
+                hairdresser=new_booking_hairdresser
+        ).exists():
             form.add_error(None, 'Date/Time already taken!')
             return False
 
@@ -114,6 +120,7 @@ class BookingDetailView(DetailViewPermissionMixin, views.DetailView):
     def dispatch(self, request, *args, **kwargs):
         booking = self.get_object()
         kwargs['booking_client'] = booking.user
+        kwargs['booking_hairdresser'] = booking.hairdresser
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
@@ -127,6 +134,7 @@ class BookingDeleteView(DetailViewPermissionMixin, views.DeleteView):
     def dispatch(self, request, *args, **kwargs):
         booking = self.get_object()
         kwargs['booking_client'] = booking.user
+        kwargs['booking_hairdresser'] = booking.hairdresser
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):

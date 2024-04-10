@@ -81,11 +81,12 @@
                         <form action="{% url 'dashboard' %}" method="post">
                             
                             <p>Select your Stylist: {{ form.hairdresser }}</p>
-                            <p>Select a Service: {{ form.service }}</p>
+                            
                             <!-- Django renders the actual select element -->
                             <p>Chosen Date: {{ form.date }}</p>
 
                             <p>Start Time: {{ form.start }}</p> <!-- Django renders the actual input element -->
+                            <p>Select a Service: {{ form.service }}</p>
                             <p>Expected End: <span id="end_time_display">N/A</span></p>
                             <p>Notes: {{ form.notes }}</p>
 

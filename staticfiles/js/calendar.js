@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     start: booking.start,
                                     end: booking.end,
                                     backgroundColor: 'blue',
-                                    textColor: 'white',
+                                    textColor: 'black',
                                 });
                             }
 
@@ -89,13 +89,23 @@ document.addEventListener('DOMContentLoaded', function () {
                             // Logic for clients: Display own booking regardless of the hairdresser and
                             // selected hairdresser's bookings if selected for a new booking
                             if (userRole === 'client') {
-                                if (booking.isOwner || (hairdresserSelect.value === booking.hairdresserId)) {
+                                if (booking.isOwner) {
                                     acc.push({
                                         title: booking.title,
                                         start: booking.start,
                                         end: booking.end,
                                         backgroundColor: 'green',
                                         textColor: 'white',
+                                    });
+                                }
+
+                                else if (hairdresserSelect.value === booking.hairdresserId) {
+                                    acc.push({
+                                        title: booking.title,
+                                        start: booking.start,
+                                        end: booking.end,
+                                        backgroundColor: 'yellow',
+                                        textColor: 'black',
                                     });
                                 }
                             }

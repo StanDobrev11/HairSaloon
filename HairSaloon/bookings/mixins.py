@@ -18,9 +18,10 @@ class DetailViewPermissionMixin(BasePermissionMixin):
 
     def dispatch(self, request, *args, **kwargs):
         booking_client = kwargs.get('booking_client', None)
+        booking_hairdresser = kwargs.get('booking_hairdresser', None)
 
-        if not request.user == booking_client:
-            messages.error(request, 'You have no access to view this booking details')
-            return redirect('dashboard')
+        if request.user == booking_client or request.user.hairdresser_profile == booking_hairdresser:
+            return super().dispatch(request, *args, **kwargs)
 
-        return super().dispatch(request, *args, **kwargs)
+        messages.error(request, 'You have no access to view this booking details')
+        return redirect('dashboard')
