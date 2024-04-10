@@ -53,47 +53,17 @@ the data, are not accessible to unauthorised users.
 
 - bookings -> this is the core of the WebApp, the place where all of above converge. The created clien has access to calendar view, rendered by JS
 code with API data. The calendar provides overall information of the available dates/times to make a booking. The form for creating booking is
-not generated on separate view but is generated on the same template. When a date/time cell is selected, the start time is set in the form,
-
-
-The option for cancelling booking lyies in the hands of the client. The option for cancelling should be made available to the hairdresser as well
-as to the admin in case of force-majeure circumstances. The cancellation of a booking is actually done by altering the bool field cancelled to True.
+not generated on separate view but is generated on the same template.
+The procedure for making a booking is simple. When a stylist is selected, the calendar will display their occupied hours and prevent overlapping.
+The free cells are available for booking. The date/time are autofilled on the form and when the desired service is selected, the duration will
+be calculated as expected end time.
+The option for cancelling booking lyies in the hands of the client and the hairdresser. The cancellation of a booking is actually done by altering the bool field cancelled to True.
 This will ensure that the hairdresser will be able to view all cancellations beforehand on their calendar.
 When booking is first created or cancelled, notification email is send to the client and to the hairdresser booked for the service. The email
 service is async coded using Celery, Redis and MailHog to simulate SMTP server. All three apps are then run in docker container for testing
-purposes. Same email service can be extended to cover cretion of the client profile as a welcome message and for the rest of the apps. The
+purposes. Same email service can be extended to cover creation of the client profile as a welcome message and for the rest of the apps. The
 sending of an email is triggerd after saving of a booking.
-The hairdresser has separate view of the bookings calendar. Their bookings are in green color, their coleagues' bookings are in red, and cancelled
-bookings are in orange. This is done to facilitate the hairdressers workflow.
+The hairdresser has a view with their respective bookings only without any consern about the workflow of their coleagues. The admin has the complete view of all bookings currently made excluding cancelled bookings.
 
-
-Examples: Code snippets or links to examples demonstrating how to use the project or its key features.
-6. Contribution Guidelines
-How to Contribute: Instructions for potential contributors on how to suggest improvements, submit pull requests, or report bugs.
-Code of Conduct: A link to the project's code of conduct.
-Community and Communication: Information on how to get in touch, such as links to community forums, project mailing lists, or chat rooms.
-7. Documentation
-API Documentation: If applicable, links to API documentation or how to generate it.
-Architectural Overview: An optional high-level overview of the architecture, for more complex projects.
-Further Reading: Links to any further documentation or tutorials.
-8. Testing
-Running Tests: Instructions on how to run the project's test suite.
-Writing Tests: Guidelines for writing tests for the project.
-9. Deployment
-Deployment Methods: Instructions on how to deploy the project in a production environment.
-Environment Variables: A list of environment variables that need to be set for deployment.
-10. Credits and Acknowledgments
-Authors and Contributors: Information about the project's authors and contributors.
-Acknowledgments: Credits to any third-party services, libraries, or code used in the project.
-Licensing: The project's license, often with a link to the full text.
-11. Additional Sections
-Screenshots/Demos: Links to screenshots or demos of your project in action.
-FAQs: Answers to frequently asked questions.
-Known Issues: Any known issues or limitations of the project.
-Collecting the Information
-Before writing the README, ensure you have all the necessary information. This might involve:
-
-Reviewing your project documentation.
-Discussing with team members or contributors to capture all features and instructions.
-Testing the installation and usage instructions in a clean environment to ensure they work as described.
-Having gathered all this information, you’re well-equipped to write a README that effectively communicates your project’s value and how to engage with it. Remember, a good README is often a collaborative effort that evolves along with your project.
+5. Deployment
+Not yet developed deploymend of the project.
