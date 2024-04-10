@@ -1,5 +1,4 @@
 from django.urls import path, include
-from django.views.generic import DetailView
 
 from HairSaloon.common.views import IndexView, ListBlogView, AboutView, AddCommentView, DeleteCommentView, \
     ApproveCommentView

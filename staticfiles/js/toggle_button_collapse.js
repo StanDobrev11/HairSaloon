@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Select all toggle buttons
     const toggleButtons = document.querySelectorAll('.toggle-button');
 

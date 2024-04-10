@@ -6,4 +6,4 @@ class BookingsConfig(AppConfig):
     name = 'HairSaloon.bookings'
 
     def ready(self) -> None:
-        import HairSaloon.bookings.signals
+        pass

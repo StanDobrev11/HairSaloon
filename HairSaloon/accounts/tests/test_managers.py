@@ -1,7 +1,7 @@
-from django.test import TestCase
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth import get_user_model
+from django.test import TestCase
 
 UserModel = get_user_model()
 
@@ -25,15 +25,6 @@ class HairSaloonUserManagerTests(TestCase):
             UserModel.objects.create_superuser(email='super@wrong.com', password='foo', is_staff=False)
         with self.assertRaises(ValueError):
             UserModel.objects.create_superuser(email='super@wrong.com', password='foo', is_superuser=False)
-    #
-    # def test_with_perm_method(self):
-    #     # Assuming you have a permission setup and a user with that permission.
-    #     # This is a simplified example; you'll need to adjust it based on your permission setup.
-    #     user = UserModel.objects.create_user(email='perm@user.com', password='foo')
-    #     # Here, replace 'can_add' with an actual permission your user should have.
-    #     # You might need to create a model and assign the permission to the user first.
-    #     perm_users = UserModel.objects.with_perm('can_add')
-    #     self.assertIn(user, perm_users)
 
 
 class UserManagerWithPermTest(TestCase):

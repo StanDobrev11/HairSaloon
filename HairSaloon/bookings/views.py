@@ -7,9 +7,9 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic as views
 
-from HairSaloon.bookings.mixins import DetailViewPermissionMixin
 from HairSaloon.accounts.models import Profile
 from HairSaloon.bookings.forms import BookingForm
+from HairSaloon.bookings.mixins import DetailViewPermissionMixin
 from HairSaloon.bookings.models import Booking
 
 

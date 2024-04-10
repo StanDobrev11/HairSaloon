@@ -37,9 +37,9 @@
                         {% endif %}
                         <a href="{% url 'delete comment' pk=obj.pk %}" class="btn btn-danger">Delete comment</a>
 
-{#                    {% elif obj.user == user %}#}
-{#                        <a href="#" class="btn btn-danger">Edit comment</a>#}
-{##}
+                        {#                    {% elif obj.user == user %}#}
+                        {#                        <a href="#" class="btn btn-danger">Edit comment</a>#}
+                        {##}
                     {% endif %}
                 {% endfor %}
             {% else %}

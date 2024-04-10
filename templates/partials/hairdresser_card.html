@@ -2,11 +2,11 @@
     <div class="hairdresser-photo">
         {% if hairdresser.user.profile.account_photo %}
             <img src="{{ hairdresser.user.profile.account_photo.url }}" alt="{{ hairdresser.name }}">
-            
+
         {% else %}
             <p>No photo available.</p>
         {% endif %}
-        
+
     </div>
 
     <div class="hairdresser-info">

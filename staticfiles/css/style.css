@@ -2,7 +2,7 @@
 Beauttio HTML Template
 v1.0.0
 */
-@import'./booking_card.css';
+@import './booking_card.css';
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -1053,6 +1053,7 @@ ul li {
     position: relative;
     z-index: 4;
 }
+
 #bookings-list {
     transition: all 0.3s ease-out;
 }

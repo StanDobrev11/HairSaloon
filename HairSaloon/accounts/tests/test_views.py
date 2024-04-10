@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.middleware import get_user
 from django.contrib.messages import get_messages
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.urls import reverse
 
 UserModel = get_user_model()

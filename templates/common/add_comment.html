@@ -25,8 +25,8 @@
             <form action="{% url 'add comment' %}" method="post">
                 <p>Title: {{ form.title }}</p>
                 <p>Comment: {{ form.content }}</p>
-                
-                {% csrf_token %} 
+
+                {% csrf_token %}
                 <p>
                     <button type="submit" class="btn login-btn">Add comment</button>
                 </p>

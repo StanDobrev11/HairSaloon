@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from HairSaloon.accounts.models import HairSaloonUser, Profile, user_directory_path
 
 

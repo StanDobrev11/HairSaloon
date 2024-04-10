@@ -26,7 +26,8 @@
 
             <div class="edit-container">
                 <div class="edit-form-content">
-                    <h1 class="entry-title">Welcome, {{ user.full_name }}</h1><div class="edit-delete-btns">
+                    <h1 class="entry-title">Welcome, {{ user.full_name }}</h1>
+                    <div class="edit-delete-btns">
                         <a href="{% url 'delete user' pk=user.pk %}">
                             <img class="bin-img" src="{% static 'img/icon-remove-22.jpg' %}" alt="bin button">
                         </a>
@@ -38,12 +39,16 @@
 
 
                         {% csrf_token %}
-                        <p><button type="submit" class="btn login-btn">Save</button></p>
-                        
-                        <p><button type="reset" class="btn login-btn">Reset</button></p>
-                        
+                        <p>
+                            <button type="submit" class="btn login-btn">Save</button>
+                        </p>
+
+                        <p>
+                            <button type="reset" class="btn login-btn">Reset</button>
+                        </p>
+
                         <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
-                        <a href="{% url 'password change' pk=user.pk %}">Change password??</a> 
+                        <a href="{% url 'password change' pk=user.pk %}">Change password??</a>
 
                     </form>
                 </div>

@@ -26,7 +26,7 @@
 
             <form action="{% url 'delete comment' pk=object.pk %}" method="post">
                 {% csrf_token %}
-                
+
                 <p>Are you sure you want to delete the {{ object }}?</p>
                 <button type="submit" class="btn btn-danger">Yes, Delete</button>
                 <a href="{% url 'blog' %}" class="btn btn-secondary">Cancel</a>
