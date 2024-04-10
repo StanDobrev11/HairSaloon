@@ -9,12 +9,13 @@ function changeDateFormat(date) {
     return newDate;
 }
 
+let selectedHairdresserId = null; // Global variable to store the selected hairdresser ID
+
 document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
-    var userElement = document.getElementById('user-role')
-    var userRole = userElement.getAttribute('data-role');
-    var hairdresserSelect = document.getElementById('id_hairdresser');
-    console.log(hairdresserSelect);
+    const hairdresserSelect = document.getElementById('id_hairdresser'); // The select element for hairdressers
+    const calendarEl = document.getElementById('calendar');
+    const userRoleElement = document.getElementById('user-role');
+    const userRole = userRoleElement.getAttribute('data-role');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
             selectable: true,
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             // Logic for clients: Display own booking regardless of the hairdresser and
                             // selected hairdresser's bookings if selected for a new booking
                             if (userRole === 'client') {
-                                if (booking.isOwner || (hairdresserSelect && hairdresserSelect.value === booking.hairdresserId)) {
+                                if (booking.isOwner || (hairdresserSelect.value === booking.hairdresserId)) {
                                     acc.push({
                                         title: booking.title,
                                         start: booking.start,
@@ -196,5 +197,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     calendar.render();
+
+   if (hairdresserSelect) {
+        hairdresserSelect.addEventListener('change', function () {
+            selectedHairdresserId = this.value; // Update the global variable
+            calendar.refetchEvents(); // Refetch the calendar events
+        });
+    }
 })
 ;
+

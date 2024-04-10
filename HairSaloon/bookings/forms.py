@@ -6,13 +6,14 @@ from HairSaloon.services.models import Service
 
 
 class BookingForm(forms.ModelForm):
-    hairdresser = forms.ModelChoiceField(queryset=HairDresser.objects.all(), required=True)
+    hairdresser = forms.ModelChoiceField(queryset=HairDresser.objects.all().order_by('user__first_name', 'user__last_name'), required=True)
 
     class Meta:
         model = Booking
         fields = ['hairdresser', 'date', 'start', 'service', 'notes']
         widgets = {
             'date': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+
         }
 
     def __init__(self, *args, **kwargs):

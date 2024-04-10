@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404
 
 from HairSaloon.bookings.models import Booking
+from HairSaloon.hairdressers.models import HairDresser
 from HairSaloon.services.models import Service
 
 
@@ -43,6 +44,7 @@ def get_filtered_bookings(request):
         is_hairdresser = booking.hairdresser.user == request.user if check_is_hairdresser else False
         is_owner = booking.user == request.user if check_is_owner else False
         is_available = is_service_available(booking)
+        # mapper = map_drop_down_id_to_user_id()
         return {
             'title': booking.service.name if (include_title and (is_owner or current_user.is_superuser)) else '',
             'start': booking.date.strftime("%Y-%m-%dT") + booking.start.strftime("%H:%M:%S"),
@@ -50,6 +52,7 @@ def get_filtered_bookings(request):
             'price': booking.service.price,
             'client': booking.user.full_name,
             'hairdresser': booking.hairdresser.user.full_name,
+            'hairdresserId': str(booking.hairdresser.id),
             'notes': booking.notes,
             'isCancelled': booking.cancelled if include_cancelled else None,
             'isHairDresser': is_hairdresser,
@@ -69,3 +72,12 @@ def get_filtered_bookings(request):
                          booking in bookings.filter(date__gte=date.today()).exclude(cancelled=True)]
 
     return JsonResponse(bookings_data, safe=False)
+
+
+def map_drop_down_id_to_user_id():
+    hairdressers = HairDresser.objects.all().order_by('user__first_name', 'user__last_name')
+    mapper = {}
+    for idx in range(1, hairdressers.count() + 1):
+        mapper[hairdressers[idx - 1].id] = str(idx)
+
+    return mapper
