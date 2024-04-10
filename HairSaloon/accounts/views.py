@@ -12,7 +12,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
-from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserPasswordChangeForm
+from HairSaloon.accounts.forms import HairSaloonUserCreationForm, HairSaloonUserPasswordChangeForm, UserAndProfileForm
 
 UserModel = get_user_model()
 
@@ -109,13 +109,21 @@ class RegisterUserView(views.CreateView):
 
 
 class HairSalonEditUserView(LoginRequiredMixin, views.UpdateView):
+    model = UserModel
+    form_class = UserAndProfileForm
     template_name = 'accounts/edit.html'
 
-    queryset = UserModel.objects.select_related('hairdresser_profile', 'profile').all()
-    fields = ['first_name', 'last_name', 'phone_number', ]
+
+
+    # queryset = UserModel.objects.select_related('hairdresser_profile', 'profile').all()
+    # fields = ['first_name', 'last_name', 'phone_number', ]
 
     def get_success_url(self):
         return reverse_lazy('edit user', kwargs={'pk': self.object.pk})
+
+    def get_object(self, queryset=None):
+        # Ensure the user can only edit their own profile
+        return self.request.user
 
 
 class HairSalonPasswordChangeView(PasswordChangeView):

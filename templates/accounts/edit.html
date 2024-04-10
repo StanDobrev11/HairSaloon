@@ -35,9 +35,8 @@
 
                     <form action="{% url 'edit user' pk=user.pk %}" method="post">
                         <p> User email (cannot be changed): {{ user.email }} </p>
+
                         {{ form.as_p }}
-
-
                         {% csrf_token %}
                         <p>
                             <button type="submit" class="btn login-btn">Save</button>
