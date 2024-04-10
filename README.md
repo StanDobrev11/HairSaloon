@@ -54,7 +54,20 @@ the data, are not accessible to unauthorised users.
 - bookings -> this is the core of the WebApp, the place where all of above converge. The created clien has access to calendar view, rendered by JS
 code with API data. The calendar provides overall information of the available dates/times to make a booking. The form for creating booking is
 not generated on separate view but is generated on the same template using JS. When a date/time cell is selected, the start time is set in the form,
-when a service is selected, the end time is autocompleted using JS. When the form is saved, attempt is made to filter
+when a service is selected, the end time is autocompleted using JS. Validation of the form is bss available hairdresser, who can perform the
+haircut. However, the present code does not account for multiple hairdressers thus rendering impossible to make multiple appointments for the same
+date/time but for different hairdressers.
+The option for cancelling booking lyies in the hands of the client. The option for cancelling should be made available to the hairdresser as well
+as to the admin in case of force-majeure circumstances. The cancellation of a booking is actually done by altering the bool field cancelled to True.
+This will ensure that the hairdresser will be able to view all cancellations beforehand on their calendar.
+When booking is first created or cancelled, notification email is send to the client and to the hairdresser booked for the service. The email
+service is async coded using Celery, Redis and MailHog to simulate SMTP server. All three apps are then run in docker container for testing
+purposes. Same email service can be extended to cover cretion of the client profile as a welcome message and for the rest of the apps. The
+sending of an email is triggerd after saving of a booking.
+The hairdresser has separate view of the bookings calendar. Their bookings are in green color, their coleagues' bookings are in red, and cancelled
+bookings are in orange. This is done to facilitate the hairdressers workflow.
+
+
 Examples: Code snippets or links to examples demonstrating how to use the project or its key features.
 6. Contribution Guidelines
 How to Contribute: Instructions for potential contributors on how to suggest improvements, submit pull requests, or report bugs.
