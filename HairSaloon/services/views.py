@@ -49,7 +49,7 @@ class CreateServiceView(AdminRequiredMixin, views.CreateView):
 
 
 class ListServiceView(views.ListView):
-    """The view is accessible for staff and admin users and inherits StaffRequiredMixin"""
+    """The view is accessible for all users"""
 
     template_name = 'services/list_services.html'
     queryset = Service.objects.all()
