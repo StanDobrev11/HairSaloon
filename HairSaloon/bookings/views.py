@@ -85,7 +85,7 @@ class BookingView(auth_mixins.LoginRequiredMixin, views.FormView):
         new_booking = form.save(commit=False)
         new_booking.user = self.request.user
         new_booking.end = self.get_end_time(new_booking)
-        existing_bookings = self.all_bookings
+        existing_bookings = self.all_bookings.exclude(cancelled=True)
 
         if not self.check_booking_conflicts(new_booking, existing_bookings, form):
             return self.form_invalid(form)

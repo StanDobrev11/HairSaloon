@@ -72,8 +72,9 @@ class Booking(models.Model):
 
         for hairdresser in capable_hairdressers:
             # Check if the hairdresser has bookings that conflict with the requested time.
+            # If the booking is cancelled, the hairdresser should be available
             conflicting_bookings = hairdresser.bookings.filter(
-                date=self.date, start__lt=self.end, end__gt=self.start)
+                date=self.date, start__lt=self.end, end__gt=self.start).exclude(cancelled=True)
 
             # If there are no conflicting bookings, the hairdresser is available.
             if not conflicting_bookings.exists():
