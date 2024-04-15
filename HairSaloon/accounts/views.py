@@ -51,9 +51,9 @@ class RegisterUserView(views.CreateView):
 
     redirect_authenticated_user = True
 
-    @method_decorator(sensitive_post_parameters())
-    @method_decorator(csrf_protect)
-    @method_decorator(never_cache)
+    @method_decorator(sensitive_post_parameters())  # not logging sensitive parameters
+    @method_decorator(csrf_protect)  # enforces checking of CSRF token before the request is processed
+    @method_decorator(never_cache)  # tells browsers not to store sensitive information
     def dispatch(self, request, *args, **kwargs):
         if self.redirect_authenticated_user and self.request.user.is_authenticated:
             redirect_to = self.get_success_url()
@@ -112,8 +112,6 @@ class HairSalonEditUserView(LoginRequiredMixin, views.UpdateView):
     model = UserModel
     form_class = UserAndProfileForm
     template_name = 'accounts/edit.html'
-
-
 
     # queryset = UserModel.objects.select_related('hairdresser_profile', 'profile').all()
     # fields = ['first_name', 'last_name', 'phone_number', ]

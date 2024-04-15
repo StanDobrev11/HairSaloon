@@ -37,14 +37,14 @@ class Booking(models.Model):
     cancelled_hairdresser_notified = models.BooleanField(default=False)
 
     # photos
-    pre_photo = models.ImageField(
-        upload_to=bookings_directory_path,
-        blank=True,
-    )
-    post_photo = models.ImageField(
-        upload_to=bookings_directory_path,
-        blank=True,
-    )
+    # pre_photo = models.ImageField(
+    #     upload_to=bookings_directory_path,
+    #     blank=True,
+    # )
+    # post_photo = models.ImageField(
+    #     upload_to=bookings_directory_path,
+    #     blank=True,
+    # )
 
     # foreign keys
     user = models.ForeignKey(

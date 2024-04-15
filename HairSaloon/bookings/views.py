@@ -38,7 +38,8 @@ class BookingView(auth_mixins.LoginRequiredMixin, views.FormView):
         if self.request.user.is_superuser:
             bookings = self.all_bookings.order_by('date', 'start').filter(cancelled=False)
         elif self.request.user.is_staff:
-            bookings = self.all_bookings.order_by('date', 'start').filter(hairdresser=self.request.user.hairdresser_profile)
+            bookings = self.all_bookings.order_by('date', 'start').filter(
+                hairdresser=self.request.user.hairdresser_profile)
         else:
             bookings = self.all_bookings.order_by('date', 'start').filter(user=self.request.user).exclude(
                 cancelled=True)
@@ -109,6 +110,8 @@ class BookingView(auth_mixins.LoginRequiredMixin, views.FormView):
                 form.add_error(None, 'No hairdresser available for the selected date/time.')
                 return self.render_to_response(self.get_context_data(form=form))
 
+        new_booking.initial_user_notified = True
+        new_booking.initial_hairdresser_notified = True
         new_booking.save()
         messages.success(self.request, 'Your booking has been successfully created.')
         return self.render_to_response(self.get_context_data(form=self.form_class()))
@@ -145,7 +148,8 @@ class BookingDeleteView(DetailViewPermissionMixin, views.DeleteView):
 
     def form_valid(self, form):
         booking = self.get_object()
-
+        booking.cancelled_user_notified = True
+        booking.cancelled_hairdresser_notified = True
         booking.cancelled = True
         booking.save()
         messages.success(self.request, 'Booking cancelled')

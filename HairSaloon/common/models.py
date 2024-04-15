@@ -8,20 +8,26 @@ UserModel = get_user_model()
 
 class Comment(models.Model):
     TITLE_MAX_LENGTH = 100
-    TITLE_MIN_LENGTH = 10
+    TITLE_MIN_LENGTH = 5
     TEXT_MAX_LENGTH = 500
-    TEXT_MIN_LENGTH = 25
+    TEXT_MIN_LENGTH = 10
 
     title = models.CharField(
         max_length=TITLE_MAX_LENGTH,
         validators=[
             MinLengthValidator(TITLE_MIN_LENGTH),
-        ]
+        ],
+        error_messages={
+            'MinLengthValidator': f'Title is too short. Min length is {TITLE_MIN_LENGTH}'
+        }
     )
 
     content = models.TextField(
         max_length=TEXT_MAX_LENGTH,
-        validators=[MinLengthValidator(TEXT_MIN_LENGTH)]
+        validators=[MinLengthValidator(TEXT_MIN_LENGTH)],
+        error_messages={
+            'MinLengthValidator': f'Comment is too short. Min length is {TEXT_MIN_LENGTH}'
+        }
     )
 
     is_approved = models.BooleanField(default=False)

@@ -14,8 +14,6 @@ def create_booking(sender, instance, created, **kwargs):
             'hairdresser_email': instance.hairdresser.user.email,
             'created_at': instance.created_at.strftime('%Y-%m-%d %H:%M:%S'),
         }
-        instance.initial_user_notified = True
-        instance.initial_hairdresser_notified = True
         send_async_email_new_booking.delay(**task_kwargs)
 
 
@@ -27,6 +25,5 @@ def cancel_booking(sender, instance, **kwargs):
             'hairdresser_email': instance.hairdresser.user.email,
             'created_at': instance.created_at.strftime('%Y-%m-%d %H:%M:%S'),
         }
-        instance.cancelled_user_notified = True
-        instance.cancelled_hairdresser_notified = True
+
         send_async_email_cancelled_booking.delay(**task_kwargs)

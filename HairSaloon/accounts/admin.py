@@ -17,7 +17,7 @@ class HairSaloonUserAdmin(admin.ModelAdmin):
     list_display = ('email', 'first_name', 'last_name', 'is_staff')
     inlines = (ProfileInline,)
 
-    def get_inline_instances(self, request, obj=None):
-        if not obj:
-            return list()
-        return super(HairSaloonUserAdmin, self).get_inline_instances(request, obj)
+    # def get_inline_instances(self, request, obj=None):
+    #     if not obj:
+    #         return list()
+    #     return super(HairSaloonUserAdmin, self).get_inline_instances(request, obj)
