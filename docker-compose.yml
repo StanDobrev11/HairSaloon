@@ -1,6 +1,16 @@
-version: '3'
+version: '3.8'
 services:
 
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
 
   celery:
     build: .
@@ -23,3 +33,6 @@ services:
     ports:
       - 1025:1025
       - 8025:8025
+
+volumes:
+  postgres_data:
