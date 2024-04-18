@@ -16,6 +16,8 @@ UserModel = get_user_model()
 @receiver(post_save, sender=UserModel)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
+        if instance.is_staff:
+            HairDresser.objects.get_or_create(user=instance)
         return Profile.objects.create(user=instance)
 
     if instance.is_superuser:

@@ -1,10 +1,12 @@
 import os
 
 import django
+from django.contrib.auth import get_user_model
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "HairSaloon.settings")
 django.setup()
 
+UserModel = get_user_model()
 from HairSaloon.services.models import Service
 
 Service.objects.create(
@@ -96,6 +98,9 @@ Service.objects.create(
     price=35.00,
     haircut_url='https://i1.wp.com/www.hadviser.com/wp-content/uploads/2020/02/10-trending-bob-hairstyle-CLYK_IqjV1i.jpg?w=614&ssl=1',
 )
+
+# user1 = UserModel.objects.create_user(email='Jane_Dow@staff.com', password='1234', is_staff=True)
+# user2 = UserModel.objects.create_user(email='John_Dow@staff.com', password='1234', is_staff=True)
 
 # service = Service.objects.get(pk=25)
 # hairdresser = HairDresser.objects.filter(services__id=service.id)[0]
