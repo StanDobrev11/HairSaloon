@@ -101,7 +101,7 @@ Service.objects.create(
 
 # user1 = UserModel.objects.create_user(email='Jane_Dow@staff.com', password='1234', is_staff=True)
 # user2 = UserModel.objects.create_user(email='John_Dow@staff.com', password='1234', is_staff=True)
-
+# user3 = UserModel.objects.create_user(email='stan@user.com', password='1234')
 # service = Service.objects.get(pk=25)
 # hairdresser = HairDresser.objects.filter(services__id=service.id)[0]
 
