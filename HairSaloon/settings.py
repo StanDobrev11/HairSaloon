@@ -29,10 +29,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Always have the alternative set to 'False'!!
-DEBUG = os.environ.get('DEBUG', False)
+DEBUG = True if str(os.environ.get('DEBUG')) == 'True' else False
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', []).split(' ')
-
+CSRF_TRUSTED_ORIGINS = [f"http://{x}:81" for x in os.environ.get('ALLOWED_HOSTS', []).split(' ')]
 # Application definition
 
 INSTALLED_APPS = [
@@ -137,12 +137,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles'
 ]
+STATIC_ROOT = BASE_DIR / 'static_collected'
 
-STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
