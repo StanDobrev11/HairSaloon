@@ -1,3 +1,4 @@
 /.venv/
-/.env
+/.env_1
 postgres_data
+/.env

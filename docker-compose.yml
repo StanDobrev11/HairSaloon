@@ -1,23 +1,9 @@
 version: '3.8'
 services:
 
-#  web:
-#    image: standobrev/hairsaloon
-#    build: .
-#    command: sh -c "python manage.py collectstatic --noinput &&
-#      gunicorn --bind 0.0.0.0:8000 HairSaloon.wsgi:application"
-#    env_file:
-#      - .env
-#    ports:
-#      - "8000:8000"
-#    depends_on:
-#      - db
 
   celery:
-    build: .
-    command: celery -A HairSaloon worker --loglevel=info
-    volumes:
-      - .:/app
+    image: standobrev/celery
     depends_on:
       - redis
     environment:
@@ -34,17 +20,3 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
-
-  db:
-    image: postgres:latest
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "5432:5432"
-
-volumes:
-  postgres_data:
