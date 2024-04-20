@@ -32,9 +32,31 @@ SECRET_KEY = os.environ.get('SECRET_KEY', None)
 DEBUG = True if str(os.environ.get('DEBUG')) == 'True' else False
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', []).split(' ')
-CSRF_TRUSTED_ORIGINS = [f"http://{x}:81" for x in os.environ.get('ALLOWED_HOSTS', []).split(' ')]
-# Application definition
+CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in os.environ.get('ALLOWED_HOSTS', []).split(' ')]
 
+# Database
+# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER', None),
+        'PASSWORD': os.environ.get('DB_PASSWORD', None),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+    }
+}
+
+# EMAIL setup for deployment and development!
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', None)
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+EMAIL_PORT = os.environ.get('EMAIL_PORT', None)
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', None)
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', None)
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -84,30 +106,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'HairSaloon.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER', None),
-        'PASSWORD': os.environ.get('DB_PASSWORD', None),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-    }
-}
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -143,7 +143,6 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'static_collected'
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -161,19 +160,6 @@ MEDIA_URL = '/media/'
 
 DATE_FORMAT = 'd.m.Y'
 
-# EMAIL setup for developing only!
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'mailhog'
-# EMAIL_PORT = 1025
-# EMAIL_USE_TLS = False
-
-# EMAIL setup for deployment!
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST', None)
-EMAIL_USE_TLS = env('EMAIL_USE_TLS')
-EMAIL_PORT = os.environ.get('EMAIL_PORT', None)
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', None)
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', None)
 #
 # MAILJET_API_KEY = env('EMAIL_HOST_USER')
 # MAILJET_SECRET_KEY = env('EMAIL_HOST_PASSWORD')

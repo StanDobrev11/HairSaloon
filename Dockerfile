@@ -3,6 +3,7 @@ FROM python:3.11
 
 # Set environment variables
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
 # Set the working directory in the container
 WORKDIR /app
@@ -13,10 +14,11 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the current directory contents into the container at /app
-COPY . /app
-
-## Make port 8000 available to the world outside this container
-#EXPOSE 8000
-#
-## Define command to run the Django development server
-#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+#COPY . /app
+COPY manage.py /app/manage.py
+COPY static_collected /app/static_collected
+COPY staticfiles /app/staticfiles
+COPY templates /app/templates
+COPY tests /app/tests
+COPY nginx /app/nginx
+COPY HairSaloon /app/HairSaloon
