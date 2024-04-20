@@ -26,6 +26,7 @@ COPY templates /app/templates
 COPY staticfiles /app/staticfiles
 COPY tests /app/tests
 COPY HairSaloon /app/HairSaloon
+COPY nginx /app/nginx
 
 # Collect static files
 RUN python manage.py collectstatic --noinput

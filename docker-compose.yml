@@ -3,12 +3,26 @@ services:
 
   web:
     image: standobrev/hairsaloon
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
+    volumes:
+      - static_volume:/app/collect_static
     depends_on:
       - db
     env_file:
       - .env
+    environment:
+      DB_HOST: db
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/collect_static
+    depends_on:
+      - web
 
   db:
     image: postgres:latest
@@ -44,3 +58,4 @@ services:
 
 volumes:
   postgres_data:
+  static_volume:
