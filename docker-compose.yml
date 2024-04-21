@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   web:
-    image: standobrev/hairsaloon
+    build: .
     expose:
       - "8000"
     volumes:
@@ -13,6 +13,8 @@ services:
       - .env
     environment:
       DB_HOST: db
+    command: sh -c "python manage.py migrate &&
+             gunicorn --bind 0.0.0.0:8000 HairSaloon.wsgi:application"
 
   nginx:
     image: nginx:latest
@@ -38,7 +40,8 @@ services:
       - .env
 
   celery:
-    image: standobrev/celery
+    build: .
+    command: celery -A HairSaloon worker --loglevel=info
     depends_on:
       - redis
     environment:

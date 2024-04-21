@@ -18,6 +18,7 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 
 # Install any needed packages specified in requirements.txt
+#pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy app
@@ -31,6 +32,3 @@ COPY caller.py /app/caller.py
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
-
-# Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "HairSaloon.wsgi:application"]
