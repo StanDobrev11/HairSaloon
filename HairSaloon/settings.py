@@ -27,8 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get("DEBUG", False) == 'True'
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", '').split(" ")
-
-CSRF_TRUSTED_ORIGINS = [f"http://{host}:80" for host in ALLOWED_HOSTS]
+CSRF_TRUSTED_ORIGINS = [f"http://{host}" for host in ALLOWED_HOSTS]
 
 DATABASES = {
     'default': {
