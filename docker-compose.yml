@@ -3,8 +3,8 @@ services:
 
   web:
     image: standobrev/hairsaloon
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     volumes:
       - static_volume:/app/collect_static
     depends_on:
