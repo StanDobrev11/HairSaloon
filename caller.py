@@ -104,7 +104,7 @@ admin = UserModel.objects.create_superuser(email='admin@salon.com', password='12
 staff1 = UserModel.objects.create_user(email='jane_dow@staff.com', password='1234', is_staff=True)
 staff2 = UserModel.objects.create_user(email='john_dow@staff.com', password='1234', is_staff=True)
 user1 = UserModel.objects.create_user(email='stan@user.com', password='1234')
-
+user2 = UserModel.objects.create_user(email='iv@user.com', password='1234')
 # service = Service.objects.get(pk=25)
 # hairdresser = HairDresser.objects.filter(services__id=service.id)[0]
 
