@@ -98,10 +98,13 @@ Service.objects.create(
     price=35.00,
     haircut_url='https://i1.wp.com/www.hadviser.com/wp-content/uploads/2020/02/10-trending-bob-hairstyle-CLYK_IqjV1i.jpg?w=614&ssl=1',
 )
+# dont create it like this! it will create hairdresser profile
+admin = UserModel.objects.create_superuser(email='admin@salon.com', password='1234')
 
-# user1 = UserModel.objects.create_user(email='Jane_Dow@staff.com', password='1234', is_staff=True)
-# user2 = UserModel.objects.create_user(email='John_Dow@staff.com', password='1234', is_staff=True)
-# user3 = UserModel.objects.create_user(email='stan@user.com', password='1234')
+staff1 = UserModel.objects.create_user(email='jane_dow@staff.com', password='1234', is_staff=True)
+staff2 = UserModel.objects.create_user(email='john_dow@staff.com', password='1234', is_staff=True)
+user1 = UserModel.objects.create_user(email='stan@user.com', password='1234')
+
 # service = Service.objects.get(pk=25)
 # hairdresser = HairDresser.objects.filter(services__id=service.id)[0]
 
