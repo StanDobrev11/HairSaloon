@@ -47,7 +47,7 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localho
 # email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
-EMAIL_PORT = os.environ.get('EMAIL_PORT', 25)
+EMAIL_PORT = os.environ.get('EMAIL_PORT', 1025)
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", False) == 'True'
 
 # Application definition
