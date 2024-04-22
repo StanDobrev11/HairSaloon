@@ -148,9 +148,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'collect_static'
 
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles/media')
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
@@ -164,6 +163,5 @@ AUTH_USER_MODEL = 'accounts.HairSaloonUser'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
-
 
 DATE_FORMAT = 'd.m.Y'
