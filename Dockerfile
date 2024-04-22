@@ -31,4 +31,4 @@ COPY nginx /app/nginx
 COPY caller.py /app/caller.py
 
 # Collect static files
-RUN python manage.py collectstatic --noinput
+RUN
