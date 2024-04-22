@@ -24,6 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy app
 COPY manage.py /app/manage.py
 COPY templates /app/templates
+COPY staticfiles /app/staticfiles
 COPY tests /app/tests
 COPY HairSaloon /app/HairSaloon
 COPY nginx /app/nginx
