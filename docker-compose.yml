@@ -61,6 +61,6 @@ services:
       - "8025:8025"
 
 volumes:
+  media_volume:
   postgres_data:
   static_volume:
-  media_volume:
