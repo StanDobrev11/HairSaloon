@@ -7,6 +7,8 @@
    3.3 Run with gunicorn, create new compose file for production with more workers
    3.4 Static files -> must be run using nginx
    3.5 CSRF_TRUSTED_ORIGINS must be set
+   3.6 Media files -> using nginx
+   3.7 Do not forget each container using .env must have prop enf_file: - .env set
 4. Push docker image to Docker Hub
 5. Pull image to server
    5.1 steps 4 & 5 are not compulsory if you build image on the server
@@ -16,6 +18,7 @@
 5. build image
 6. start app
 
-7. MAKE MIGRATIONS docker exec -it hairsaloon-web-1 python manage.py migrate
+7. MAKE MIGRATIONS docker exec -it hairsaloon-web-1 python manage.py migrate adn COLLECTSTATIC
+8. Open port 8025 on the instance for inbound connection to allow mailhog to connect
 
 
