@@ -42,4 +42,9 @@ When a booking is first created or cancelled, a notification email is sent to th
 The hairdresser has a view of their respective bookings only without any concern about the workflow of their coworkers. The admin has a complete view of all bookings currently made, excluding cancelled bookings.
 
 5. Deployment
-Not yet developed the deployment of the project.
+Project has been deployed on the following address:
+http://13.53.77.249
+
+The server is hosted by AWS and using docker. The site is not yet secure so PLEASE DO NOT PROVIDE SENSITIVE INFO!. Once a booking has been created or deleted, MAILHOG can be accessed using the link and email transfer checked.
+
+Working on domain and real email sending system.
