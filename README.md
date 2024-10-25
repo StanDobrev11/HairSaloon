@@ -43,7 +43,7 @@ The hairdresser has a view of their respective bookings only without any concern
 
 5. Deployment
 Project has been deployed on the following address:
-[http://13.53.77.249](http://54.87.95.213/)
+http://54.87.95.213/
 
 The server is hosted by AWS and using docker. The site is not yet secure so PLEASE DO NOT PROVIDE SENSITIVE INFO!. Once a booking has been created or deleted, MAILHOG can be accessed using the link and email transfer checked.
 
