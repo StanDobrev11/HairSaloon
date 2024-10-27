@@ -1,50 +1,36 @@
-Welcome to HairSaloon WebApp!
+## Welcome to HairSaloon WebApp!
 
-1. Purpose and scope:
-The main purpose of the website is a booking system with notifications for a Hair Saloon!
+### Purpose and Scope: 
+The main purpose of the website is to serve as a booking system with notifications for a Hair Saloon. The project was developed to meet the requirements of SoftUni's Django Advanced course and final project.
 
-The project was developed in order to meet the requirements of SoftUni's Django Advanced course and final project.
+It aims to handle bookings by date and time, provide confirmation via email to the client and the hairdresser, and assign bookings when created or canceled.
 
-It aims to handle bookings by date and time, provide confirmation via email to the client and the hairdresser, and assign to the booking, when created or cancelled.
+At the same time, it provides an overall view of the available hours to book a service and details of the hairstyles that are available in the salon.
 
-At the same time, provide an overall view of the available hours to book a service and details of the hairstyles that are available in the saloon.
+### Getting Started: 
+To run the app, please note the requirements.txt file.
 
-2. Getting Started:
-In order to be able to run the app, please note the requirements.txt file.
+### Usage: 
+For a regular client, the usage of the app is straightforward: creating a profile, logging in, viewing available dates and times, and making or canceling an existing booking. For a hairdresser, once the profile is created, the site admin will provide staff access, and the hairdresser will be included in the Hairdressers group with certain permissions.
 
-3. Usage:
-For a regular client, the usage of the app is straightforward -> creating a profile, logging-in, viewing available dates and times, and making or cancel an existing booking;
-For a hairdresser, when the profile is created, the admin of the site will provide staff access, and you will be included in the Hairdressers group with certain permissions;
-  
-4. Features:
+### Features: 
 The WebApp consists of the following apps:
 
-- accounts -> an extended Django user model using email instead of a username for credentials. When a user is created, a signal is then sent to create OneToOne relation to the Profile object, containing additional profile info.
-The app contains various views set to handle user registration, login/logout, password change, and profile edit/delete. The user profile is never deleted from the database, but instead is soft-deleted, triggering the is_active bool to False. When the same user tries to register again with the same email, this will trigger the is_active to True and provide access to the user with the old username. All this is done mainly for training purposes.
-The app is tested for custom logic only.
+- **accounts**: This app features an extended Django user model using email instead of a username for credentials. When a user is created, a signal is sent to create a OneToOne relation to the Profile object, which contains additional profile info. The app has various views to handle user registration, login/logout, password change, and profile edit/delete. The user profile is never deleted from the database; instead, it is soft-deleted by setting the is_active boolean to False. If the same user tries to register again with the same email, this will set is_active to True and provide access to the user with the old username. All this is done mainly for training purposes. The app is tested for custom logic only.
 
-- hairdressers -> the app contains only the model, which is OneToOne related to the user model.
-When the user is set to be staff via Admin site, the hairdresser is then created, and the usermodel is associated with it. If a hairdresser is no longer employed in the saloon, i.e. the is_staff is set to False, then hairdresser profile is deleted.
+- **hairdressers**: This app contains only the model, which is OneToOne related to the user model. When the user is set to be staff via the Admin site, the hairdresser is then created, and the user model is associated with it. If a hairdresser is no longer employed in the salon (i.e., the is_staff is set to False), then the hairdresser profile is deleted.
 
-- services -> the idea behind the services app is to contain all the hair styles that can be done by the salon. All the services have a picture of the expected haircut result. The service model has ManyToMany relation to hairdressers since a hairdresser can perform many different hairstyles and a hairstyle can be done by many different hairdressers. The service is added ONLY by the admin of the site after ensuring that a hairdresser can do the haircut. Same goes for the deletion - if a hairdresser, capable of doing certain haircut is fired and there is no one else who can perform that exact haircut, then it should be deleted.
-The views are composed in such a way as to ensure proper access. The DeleteServiceView, EditServiceView, and CreateServiceView are accessible only to superusers.
-The remaining details and list of service views are available for the general population.
+- **services**: The services app contains all the hairstyles that can be done by the salon. All services have a picture of the expected haircut result. The service model has a ManyToMany relation to hairdressers since a hairdresser can perform many different hairstyles, and a hairstyle can be done by many different hairdressers. The service is added ONLY by the admin of the site after ensuring that a hairdresser can perform the haircut. The same applies to deletion; if a hairdresser capable of doing a certain haircut is fired and there is no one else who can perform that haircut, it should be deleted. The views are composed to ensure proper access. The DeleteServiceView, EditServiceView, and CreateServiceView are accessible only to superusers. The remaining details and list of service views are available for the general population.
 
-- common -> the common app provides basic views of the index (home page). Without registration, the client is able to access certain features from the home page. The blog page is also accessible. The blog contains all the comments left by registered users. The idea behind a comment is that before becoming visible to the population, the comment is first approved by the administrator. The deletion of the comment can be done either by the client or by the admin. The hairdressers have the option to view the comments.
+- **common**: The common app provides basic views of the index (home page). Without registration, the client can access certain features from the home page. The blog page is also accessible. The blog contains all the comments left by registered users. Comments must be approved by the administrator before becoming visible to the public. Deletion of the comment can be done either by the client or by the admin. Hairdressers have the option to view the comments.
 
-- api -> this app provides json parsed data to be used for the JS rendered calendar in the bookings section of the webapp. The views, generated the data, are not accessible to unauthorized users.
+- **api**: This app provides JSON-parsed data to be used for the JS-rendered calendar in the bookings section of the web app. The views generating the data are not accessible to unauthorized users.
 
-- bookings -> this is the core of the WebApp, the place where all of the above converge. The created client has access to a calendar view, rendered by JS code with API data. The calendar provides overall information on the available dates/times to make a booking. The form for creating a booking is not generated on a separate view but is generated on the same template.
-The procedure for making a booking is simple. When a stylist is selected, the calendar will display their occupied hours and prevent overlapping.
-The free cells are available for booking. The date/time are auto-filled on the form, and when the desired service is selected, the duration will be calculated as the expected end time.
-The option for canceling bookings lies in the hands of the client and the hairdresser. The cancellation of a booking is actually done by altering the bool field cancelled to True. This will ensure that the hairdresser will be able to view all cancellations beforehand on their calendar.
-When a booking is first created or cancelled, a notification email is sent to the client and to the hairdresser booked for the service. The email service is async-coded using Celery, Redis and MailHog to simulate SMTP server. All three apps are then run in a Docker container. The same email service can be extended to cover the creation of the client profile as a welcome message and for the rest of the apps. The The sending of an email is triggered after saving a booking.
-The hairdresser has a view of their respective bookings only without any concern about the workflow of their coworkers. The admin has a complete view of all bookings currently made, excluding cancelled bookings.
+- **bookings**: This is the core of the WebApp, where all of the above converge. The created client has access to a calendar view, rendered by JS code with API data. The calendar provides overall information on the available dates and times to make a booking. The form for creating a booking is not generated on a separate view but rather on the same template. The booking procedure is simple: when a stylist is selected, the calendar will display their occupied hours and prevent overlapping. The free slots are available for booking. The date/time are auto-filled on the form, and when the desired service is selected, the expected end time is calculated based on the duration. The option for canceling bookings lies with both the client and the hairdresser. The cancellation of a booking is done by altering the boolean field "cancelled" to True. This ensures that the hairdresser can view all cancellations beforehand on their calendar. When a booking is created or canceled, a notification email is sent to both the client and the hairdresser booked for the service. The email service is async-coded using Celery, Redis, and MailHog to simulate an SMTP server. All three apps run in a Docker container. The same email service can be extended to cover the creation of the client profile as a welcome message and for the rest of the apps. The sending of an email is triggered after saving a booking. The hairdresser has a view of their respective bookings only, without concern for the workflow of their coworkers. The admin has a complete view of all currently made bookings, excluding canceled bookings.
 
-5. Deployment
-Project has been deployed on the following address:
-http://54.87.95.213/
+### Deployment: 
+The project has been deployed at the following address: http://54.87.95.213/ 
 
-The server is hosted by AWS and using docker. The site is not yet secure so PLEASE DO NOT PROVIDE SENSITIVE INFO!. Once a booking has been created or deleted, MAILHOG can be accessed using the link and email transfer checked.
+The server is hosted by AWS and uses Docker. The site is not yet secure, so PLEASE DO NOT PROVIDE SENSITIVE INFO! Once a booking has been created or deleted, MAILHOG can be accessed using the link to check email transfers.
 
-Working on domain and real email sending system.
+Working on domain and a real email-sending system.
