@@ -32,5 +32,3 @@ The WebApp consists of the following apps:
 The project has been deployed at the following address: http://54.87.95.213/ 
 
 The server is hosted by AWS and uses Docker. The site is not yet secure, so PLEASE DO NOT PROVIDE SENSITIVE INFO! Once a booking has been created or deleted, MAILHOG can be accessed using the link to check email transfers.
-
-Working on domain and a real email-sending system.
