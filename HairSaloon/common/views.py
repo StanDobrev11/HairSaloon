@@ -70,4 +70,4 @@ class DeleteCommentView(AdminRequiredMixin, views.DeleteView):
 
 class AboutView(views.ListView):
     template_name = 'common/about.html'
-    queryset = HairDresser.objects.select_related('user')
+    queryset = HairDresser.objects.select_related('user').exclude(user__email='admin@salon.com')

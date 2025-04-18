@@ -4,3 +4,4 @@ postgres_data
 static_volume
 media_volume
 .env
+db.sqlite3
