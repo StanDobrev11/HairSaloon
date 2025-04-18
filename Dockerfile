@@ -29,6 +29,7 @@ COPY tests /app/tests
 COPY HairSaloon /app/HairSaloon
 COPY nginx /app/nginx
 COPY caller.py /app/caller.py
+COPY .env /app/.env
 
 # Collect static files
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py collectstatic --noinput
