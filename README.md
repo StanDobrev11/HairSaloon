@@ -31,6 +31,6 @@ The WebApp consists of the following apps:
 ### Deployment: 
 The project has been deployed at the following address: https://hairsalon.cloudmachine.uk/. 
 
-The app is hosted on a virtual machine on my private server and deployed usiing Docker
+The app is hosted on a virtual machine on my private server and deployed using Docker
 
-Once a booking has been created or deleted, MAILHOG can be accessed using the link to check email transfers.
+Once a booking has been created or deleted, an email is sent to the user as notification. In order to test the service, make sure you register with a valid email address.
