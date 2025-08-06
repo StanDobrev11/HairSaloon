@@ -28,9 +28,7 @@ The WebApp consists of the following apps:
 
 - **bookings**: This is the core of the WebApp, where all of the above converge. The created client has access to a calendar view, rendered by JS code with API data. The calendar provides overall information on the available dates and times to make a booking. The form for creating a booking is not generated on a separate view but rather on the same template. The booking procedure is simple: when a stylist is selected, the calendar will display their occupied hours and prevent overlapping. The free slots are available for booking. The date/time are auto-filled on the form, and when the desired service is selected, the expected end time is calculated based on the duration. The option for canceling bookings lies with both the client and the hairdresser. The cancellation of a booking is done by altering the boolean field "cancelled" to True. This ensures that the hairdresser can view all cancellations beforehand on their calendar. When a booking is created or canceled, a notification email is sent to both the client and the hairdresser booked for the service. The email service is async-coded using Celery, Redis, and MailHog to simulate an SMTP server. All three apps run in a Docker container. The same email service can be extended to cover the creation of the client profile as a welcome message and for the rest of the apps. The sending of an email is triggered after saving a booking. The hairdresser has a view of their respective bookings only, without concern for the workflow of their coworkers. The admin has a complete view of all currently made bookings, excluding canceled bookings.
 
-### Deployment: 
-The project has been deployed at the following address: https://hairsalon.cloudmachine.uk/. 
-
-The app is hosted on a virtual machine on my private server and deployed using Docker
-
 Once a booking has been created or deleted, an email is sent to the user as notification. In order to test the service, make sure you register with a valid email address.
+
+### Deployment: 
+The project is not currently deployed. 
